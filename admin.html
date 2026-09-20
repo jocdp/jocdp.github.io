@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<title>لوحة إدارة العضوية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand:#cb8738;          /* اللون الرئيسي المعتمد من موقع الحزب */
+  --brand-dark:#a96c28;
+  --brand-light:#e0ab6d;
+  --brand-050:#fbf5ec;
+  --brand-100:#f4e7d6;
+  --bg:#faf8f5;
+  --card:#ffffff;
+  --line:#e9e0d4;
+  --line-2:#d8ccbb;
+  --ink:#14110d;          /* أسود غامق لنصوص المحتوى */
+  --ink-2:#231f1a;
+  --muted:#6a6157;
+  --ok:#2e7d5b;
+  --ok-bg:#e8f5ee;
+  --warn:#9a6b00;
+  --warn-bg:#fdf5e2;
+  --err:#b3261e;
+  --err-bg:#fdecea;
+  --wa:#128c7e;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(80,55,20,.05), 0 10px 26px rgba(80,55,20,.07);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Tajawal',"Segoe UI",Tahoma,Arial,sans-serif;
+  background:var(--bg); color:var(--ink);
+  font-size:16.5px; line-height:1.8; -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px 60px}
+
+/* ===== الترويسة ===== */
+.topbar{background:var(--brand);color:#fff}
+.topbar-in{max-width:980px;margin:0 auto;padding:12px 14px;display:flex;align-items:center;gap:12px}
+.crest{width:52px;height:46px;flex:0 0 52px;display:grid;place-items:center}
+.crest img{width:100%;height:100%;object-fit:contain;image-rendering:auto}
+.brand{min-width:0;flex:1}
+.brand h1{margin:0;font-size:clamp(14px,4.2vw,19px);font-weight:800;letter-spacing:0;line-height:1.35;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand p{margin:1px 0 0;font-size:clamp(9px,2.4vw,11.5px);letter-spacing:.6px;color:#fbeedd;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar .back{flex:0 0 auto;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);
+  color:#fff;border-radius:10px;padding:8px 14px;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap}
+.topbar .back:hover{background:rgba(255,255,255,.3)}
+@media (max-width:520px){
+  .topbar-in{padding:10px 12px;gap:9px}
+  .crest{width:42px;height:38px;flex:0 0 42px}
+  .brand h1{white-space:normal;overflow:visible;font-size:14.5px;line-height:1.3}
+  .brand p{display:none}
+  .topbar .back{padding:7px 11px;font-size:12.5px}
+}
+.page-title{max-width:980px;margin:0 auto;padding:20px 16px 4px}
+.page-title h2{margin:0;font-size:clamp(19px,5.4vw,23px);font-weight:800;color:var(--brand-dark)}
+.page-title p{margin:5px 0 0;color:var(--muted);font-size:14.5px}
+
+/* ===== البطاقات ===== */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin-top:16px}
+.card > h3{margin:0 0 4px;font-size:18px;color:var(--brand-dark);font-weight:800;display:flex;align-items:center;gap:9px}
+.card > h3::before{content:"";width:5px;height:19px;background:var(--brand);border-radius:3px;display:inline-block}
+.card .sub{margin:0 0 16px;color:var(--muted);font-size:14px}
+.card b, .card strong, .terms b{color:#000;font-weight:700}   /* إبراز الكلمات المهمة بالأسود */
+
+/* ===== الشاشة الرئيسية ===== */
+.hero{background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);color:#fff;padding:34px 20px;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:
+  linear-gradient(135deg,rgba(255,255,255,.10) 25%,transparent 25%) -60px 0/120px 120px,
+  linear-gradient(225deg,rgba(255,255,255,.08) 25%,transparent 25%) 0 0/160px 160px;opacity:.7}
+.hero > *{position:relative;z-index:1}
+.hero img{height:96px;background:#fff;border-radius:14px;padding:10px 16px;box-shadow:0 8px 26px rgba(0,0,0,.14)}
+.hero h2{margin:16px 0 4px;font-size:25px;font-weight:800}
+.hero p{margin:0;font-size:15px;color:#fbeedd}
+.home-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:22px}
+@media (max-width:760px){ .home-grid{grid-template-columns:1fr} }
+.home-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:26px 20px;text-align:center;cursor:pointer;transition:.18s;border-top:4px solid var(--brand);font-family:inherit}
+.home-card:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(80,55,20,.16);border-color:var(--brand-light);border-top-color:var(--brand)}
+.home-card .ic{width:70px;height:70px;margin:0 auto 14px;border-radius:50%;background:var(--brand-050);
+  display:grid;place-items:center;border:1px solid var(--brand-100)}
+.home-card .ic svg{width:34px;height:34px;stroke:var(--brand-dark);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.home-card b{display:block;font-size:17.5px;color:var(--brand-dark);font-weight:800}
+.home-card span{display:block;font-size:13.5px;color:var(--muted);margin-top:5px;line-height:1.65}
+.home-info{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px;font-size:14px}
+@media (max-width:620px){ .home-info{grid-template-columns:1fr} }
+.home-info div{border-bottom:1px dashed var(--line);padding:6px 0}
+.home-info .k{color:var(--muted);font-size:12.5px;font-weight:700;display:block}
+
+/* ===== الشبكة والحقول ===== */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px 16px}
+.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.full{grid-column:1/-1}
+@media (max-width:700px){ .grid,.grid.three{grid-template-columns:1fr} }
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+label{font-size:14.5px;font-weight:700;color:var(--ink-2)}
+label .req{color:var(--err)}
+.hint{font-size:12.5px;color:var(--muted);line-height:1.6}
+input[type=text],input[type=tel],input[type=email],input[type=number],select,textarea{
+  font-family:inherit;font-size:16px;color:var(--ink);background:#fff;
+  border:1px solid var(--line-2);border-radius:11px;padding:12px 13px;width:100%;
+  transition:border-color .15s, box-shadow .15s; min-height:48px;
+}
+textarea{min-height:118px;resize:vertical;line-height:1.8}
+select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237b7166' stroke-width='2.5'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat:no-repeat;background-position:left 13px center;padding-left:40px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(203,135,56,.18)}
+input:disabled,input[readonly]{background:var(--brand-050);color:var(--brand-dark);font-weight:700}
+.invalid input,.invalid select,.invalid textarea,.invalid .dbtn{border-color:var(--err);box-shadow:0 0 0 3px rgba(179,38,30,.10)}
+.err-msg{display:none;color:var(--err);font-size:12.5px;font-weight:600}
+.invalid .err-msg{display:block}
+.nid-wrap input{letter-spacing:9px;text-align:center;font-weight:700;font-size:19px;direction:ltr}
+
+/* ===== اختيار التاريخ ===== */
+.dbtn{font-family:inherit;font-size:16px;text-align:right;background:#fff;border:1px solid var(--line-2);border-radius:11px;
+  padding:12px 13px;min-height:48px;width:100%;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--ink)}
+.dbtn:hover{border-color:var(--brand)}
+.dbtn .ph{color:#9b9287}
+.dbtn svg{width:20px;height:20px;stroke:var(--brand-dark);fill:none;stroke-width:1.8;flex:0 0 20px}
+.dpick{position:fixed;inset:0;background:rgba(51,47,42,.55);display:none;z-index:90;padding:14px;overflow:auto}
+.dpick.show{display:block}
+.dbox{max-width:420px;margin:24px auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 22px 60px rgba(0,0,0,.3)}
+.dhead{background:var(--brand);color:#fff;padding:14px 18px}
+.dhead .t{font-size:17px;font-weight:800}
+.dhead .s{font-size:13px;color:#fae9d5;margin-top:2px}
+.dsteps{display:flex;gap:6px;margin-top:10px}
+.dsteps span{flex:1;text-align:center;font-size:12.5px;font-weight:700;padding:5px;border-radius:7px;background:rgba(255,255,255,.18)}
+.dsteps span.on{background:#fff;color:var(--brand-dark)}
+.dbody{padding:14px;max-height:56vh;overflow:auto}
+.dnav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.dnav button{font-family:inherit;font-size:14px;font-weight:700;color:var(--brand-dark);background:var(--brand-050);
+  border:1px solid var(--brand-100);border-radius:9px;padding:9px 12px;cursor:pointer;min-height:44px;white-space:nowrap}
+.dnav button:hover{background:var(--brand-100)}
+.dnav button:disabled{opacity:.4;cursor:not-allowed}
+.dnav b{font-size:15px;font-weight:800;color:var(--ink);direction:ltr;white-space:nowrap}
+.dhintbox{margin-top:12px;background:var(--brand-050);border:1px solid var(--brand-100);border-radius:9px;
+  padding:9px 12px;font-size:12.5px;color:var(--ink-2);line-height:1.6}
+.dgrid{display:grid;gap:8px}
+.dgrid.y{grid-template-columns:repeat(4,1fr)}
+.dgrid.m{grid-template-columns:repeat(3,1fr)}
+.dgrid.d{grid-template-columns:repeat(7,1fr)}
+@media (max-width:420px){ .dgrid.y{grid-template-columns:repeat(3,1fr)} }
+.dcell{font-family:inherit;font-size:15.5px;font-weight:700;padding:13px 4px;border:1px solid var(--line);background:#fff;
+  border-radius:10px;cursor:pointer;color:var(--ink);transition:.12s;min-height:48px}
+.dcell:hover{background:var(--brand-050);border-color:var(--brand)}
+.dcell.sel{background:var(--brand);color:#fff;border-color:var(--brand)}
+.dcell:disabled{opacity:.32;cursor:not-allowed;background:#f6f3ef}
+.dgrid.d .dcell{font-size:15px;padding:12px 2px}
+.dfoot{display:flex;justify-content:space-between;gap:10px;padding:12px 14px;border-top:1px solid var(--line);background:#fcfaf7}
+
+/* ===== الاختيارات ===== */
+.choices{display:flex;flex-wrap:wrap;gap:10px}
+.choice{position:relative}
+.choice input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.choice span{display:block;border:1px solid var(--line-2);background:#fff;border-radius:999px;padding:10px 24px;font-size:15.5px;font-weight:700;cursor:pointer;transition:.15s;min-width:100px;text-align:center}
+.choice input:checked + span{background:var(--brand);border-color:var(--brand);color:#fff}
+
+/* ===== اللجان ===== */
+.coms{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:700px){ .coms{grid-template-columns:1fr} }
+.com{position:relative}
+.com input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.com .box{display:block;border:1.5px solid var(--line-2);background:#fff;border-radius:12px;padding:14px 16px;cursor:pointer;transition:.15s;height:100%}
+.com .box b{display:block;font-size:16px;color:var(--ink);font-weight:800}
+.com .box small{display:block;font-size:12px;color:var(--muted);line-height:1.65;margin-top:4px}
+.com input:checked + .box{border-color:var(--brand);background:var(--brand-050);box-shadow:0 0 0 3px rgba(203,135,56,.14)}
+.com input:checked + .box b::before{content:"✓ ";color:var(--brand-dark);font-weight:800}
+.com input:disabled + .box{opacity:.55;cursor:not-allowed}
+.com-count{font-size:13.5px;font-weight:700;color:var(--brand-dark);background:var(--brand-050);border:1px solid var(--brand-100);
+  border-radius:9px;padding:9px 14px;display:inline-block;margin-bottom:12px}
+
+/* ===== الشروط والإقرارات ===== */
+.terms{background:var(--brand-050);border:1px solid var(--brand-100);border-radius:12px;padding:15px 17px}
+.terms h4{margin:0 0 8px;font-size:15.5px;color:var(--brand-dark)}
+.terms ol{margin:0;padding-inline-start:20px;font-size:14.5px;color:var(--ink-2)}
+.terms li{margin-bottom:4px}
+.check{display:flex;gap:11px;align-items:flex-start;background:#fff;border:1px solid var(--line-2);border-radius:11px;padding:13px 15px;cursor:pointer;margin-top:10px}
+.check input{width:22px;height:22px;accent-color:var(--brand);flex:0 0 22px;margin-top:2px}
+.check span{font-size:14.5px;font-weight:600;line-height:1.65}
+.check.invalid{border-color:var(--err);background:var(--err-bg)}
+
+/* ===== المرفقات ===== */
+.upload{border:1.5px dashed var(--line-2);border-radius:12px;background:#fdfbf8;padding:16px;text-align:center;cursor:pointer;transition:.15s}
+.upload:hover{border-color:var(--brand);background:var(--brand-050)}
+.upload input{display:none}
+.upload .u-title{font-weight:700;font-size:14.5px;color:var(--brand-dark)}
+.upload .u-hint{font-size:12.5px;color:var(--muted)}
+.upload.has{border-style:solid;border-color:var(--ok);background:var(--ok-bg)}
+.upload.has .u-title{color:var(--ok)}
+.upload.invalid{border-color:var(--err);background:var(--err-bg)}
+.thumb{margin-top:8px;max-height:120px;border-radius:8px;border:1px solid var(--line)}
+
+/* ===== الأزرار ===== */
+.btn{font-family:inherit;font-size:16px;font-weight:700;border-radius:11px;padding:13px 28px;border:1px solid transparent;cursor:pointer;transition:.15s;min-height:50px}
+.btn-primary{background:var(--brand);color:#fff}
+.btn-primary:hover{background:var(--brand-dark)}
+.btn-ghost{background:#fff;color:var(--brand-dark);border-color:var(--line-2)}
+.btn-ghost:hover{background:var(--brand-050);border-color:var(--brand)}
+.btn-dark{background:var(--ink);color:#fff}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.actions{display:flex;justify-content:space-between;gap:12px;margin-top:22px;flex-wrap:wrap}
+.actions .spacer{flex:1}
+
+/* ===== شريط الخطوات ===== */
+.steps{display:flex;gap:4px;margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:10px;overflow-x:auto;box-shadow:var(--shadow)}
+.step{flex:1;min-width:104px;text-align:center;padding:8px 6px;border-radius:9px;font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap}
+.step b{display:block;width:27px;height:27px;line-height:27px;margin:0 auto 4px;border-radius:50%;background:var(--brand-050);color:var(--brand-dark);font-size:13px}
+.step.active{background:var(--brand);color:#fff}
+.step.active b{background:#fff;color:var(--brand-dark)}
+.step.done b{background:var(--ok);color:#fff}
+.bar{height:6px;background:var(--brand-100);border-radius:99px;margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--brand);border-radius:99px;transition:width .3s}
+
+/* ===== التنبيهات ===== */
+.alert{border-radius:11px;padding:13px 15px;font-size:14.5px;font-weight:600;margin-top:14px;display:none}
+.alert.show{display:block}
+.alert-err{background:var(--err-bg);color:var(--err);border:1px solid #f3c2bd}
+.alert-err ul{margin:6px 0 0;padding-inline-start:20px;font-weight:500}
+.alert-ok{background:var(--ok-bg);color:var(--ok);border:1px solid #bfe3ce}
+.alert-warn{background:var(--warn-bg);color:var(--warn);border:1px solid #f0dcae}
+
+/* ===== النتيجة والتتبع ===== */
+.done{text-align:center;padding:28px 18px}
+.done .tick{width:78px;height:78px;border-radius:50%;background:var(--ok-bg);color:var(--ok);display:grid;place-items:center;margin:0 auto 14px;font-size:40px;font-weight:800}
+.ref{display:inline-block;background:var(--brand);color:#fff;border-radius:11px;padding:11px 24px;font-size:23px;font-weight:800;letter-spacing:1px;direction:ltr;margin:10px 0}
+.logo-print{display:block;margin:0 auto 12px;width:200px;max-width:62%}
+.track{margin-top:8px}
+.track .t-row{display:flex;gap:14px;align-items:flex-start;padding:0}
+.track .t-dot{flex:0 0 auto;display:flex;flex-direction:column;align-items:center}
+.track .t-dot i{width:17px;height:17px;border-radius:50%;background:#e4dbcf;display:block;margin-top:5px}
+.track .t-dot s{display:block;width:2px;flex:1;background:#e4dbcf;min-height:26px}
+.track .t-row.on .t-dot i{background:var(--brand)}
+.track .t-row.on .t-dot s{background:var(--brand)}
+.track .t-row.cur .t-dot i{background:var(--ok);box-shadow:0 0 0 4px var(--ok-bg)}
+.track .t-txt{padding-bottom:16px}
+.track .t-txt b{display:block;font-size:15.5px;color:var(--ink)}
+.track .t-row:not(.on) .t-txt b{color:#a79c8f}
+.track .t-txt span{font-size:13px;color:var(--muted)}
+
+/* ===== التحميل ===== */
+.overlay{position:fixed;inset:0;background:rgba(51,47,42,.5);display:none;place-items:center;z-index:95}
+.overlay.show{display:grid}
+.spin{background:#fff;border-radius:14px;padding:26px 34px;text-align:center;font-weight:700;color:var(--brand-dark)}
+.spin i{display:block;width:34px;height:34px;margin:0 auto 12px;border:3px solid var(--brand-100);border-top-color:var(--brand);border-radius:50%;animation:sp .9s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:24px}
+
+/* ===== تذييل المطوّر ===== */
+.dev{margin-top:26px;padding:14px 16px 22px;text-align:center;border-top:1px solid var(--line);color:var(--muted);font-size:12.5px;line-height:1.9}
+.dev b{color:var(--ink);font-weight:700}
+.dev span{display:inline-block;direction:ltr;unicode-bidi:isolate}
+
+/* ===== راحة العرض على الهاتف ===== */
+@media (max-width:640px){
+  body{font-size:15.5px}
+  .wrap{padding:0 12px 44px}
+  .card{padding:16px 14px;border-radius:12px;margin-top:12px}
+  .card > h3{font-size:16.5px}
+  .grid,.grid.three{gap:13px}
+  .hero{padding:24px 14px}
+  .hero img{height:74px;padding:8px 12px}
+  .hero h2{font-size:21px;margin-top:12px}
+  .hero p{font-size:13.5px}
+  .home-card{padding:20px 14px}
+  .home-card .ic{width:60px;height:60px;margin-bottom:10px}
+  .home-card .ic svg{width:29px;height:29px}
+  .home-card b{font-size:16.5px}
+  .home-grid{gap:12px;margin-top:16px}
+  #aboutGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .steps{padding:8px;gap:3px}
+  .step{min-width:88px;font-size:12px;padding:7px 4px}
+  .step b{width:24px;height:24px;line-height:24px;font-size:12px}
+  .actions{gap:9px}
+  .actions .btn{flex:1 1 auto;padding:13px 16px;font-size:15.5px}
+  .actions .spacer{display:none}
+  .btn{padding:13px 20px}
+  .terms{padding:13px 14px}
+  .terms ol{padding-inline-start:18px;font-size:14px}
+  .check span{font-size:14px}
+  .dbox{margin:8px auto;max-width:100%}
+  .dbody{max-height:60vh;padding:12px}
+  .dgrid.y{grid-template-columns:repeat(3,1fr)}
+  .dgrid.m{grid-template-columns:repeat(2,1fr)}
+  .dgrid.d{grid-template-columns:repeat(7,1fr);gap:6px}
+  .dgrid.d .dcell{padding:11px 0;font-size:14.5px}
+  .dcell{padding:12px 4px;font-size:15px}
+  .nid-wrap input{letter-spacing:6px;font-size:17px}
+  .ref{font-size:19px;padding:10px 16px}
+  .track .t-txt b{font-size:14.5px}
+}
+@media (max-width:380px){
+  .dgrid.y{grid-template-columns:repeat(2,1fr)}
+  .home-grid{grid-template-columns:1fr}
+  #aboutGrid{grid-template-columns:1fr!important}
+}
+@media print{ .no-print{display:none!important} body{background:#fff} .card{box-shadow:none} }
+</style>
+
+<!-- =======================================================
+     بطاقة عضوية الحزب — بأسلوب البطاقات الرسمية وبهوية الحزب
+     تُستدعى عبر include('card')  |  API: buildMemberCard(d) / renderCardQR(root) / printCards(id)
+     ======================================================= -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+.mcards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+.mcard{position:relative;width:85.6mm;height:54mm;border-radius:3mm;overflow:hidden;flex:0 0 auto;
+  background:#fffdf9;color:#14110d;font-family:'Tajawal',Tahoma,Arial,sans-serif;
+  box-shadow:0 6px 22px rgba(80,55,20,.25);border:.35mm solid #d8c8ab;
+  /* --fs: تصغير عام يضبطه الجافاسكربت | --sigk: حجم التواقيع | --sigd: درجة تغميقها */
+  --fs:1;--sigk:1.3;--sigd:1.8}
+
+/* النقشة الأمنية والعلامة المائية */
+.mcard .sec-bg{position:absolute;inset:0;pointer-events:none}
+.mcard .sec-bg svg{width:100%;height:100%;display:block}
+.mcard .wmk{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.mcard .wmk img{width:38mm;opacity:.11;filter:saturate(.75)}
+.mcard .birds{position:absolute;inset:0;pointer-events:none;opacity:.07;
+  background-repeat:repeat;background-size:13mm auto;background-position:center}
+.mcard.back .wmk img{width:32mm;opacity:.10}
+.mcard.back .birds{opacity:.06;background-size:11mm auto}
+.mcard .tint{position:absolute;inset:0;background:linear-gradient(160deg,rgba(203,135,56,.10),rgba(255,255,255,0) 45%,rgba(203,135,56,.12));pointer-events:none}
+
+/* الشريط العلوي */
+.mcard .band{position:relative;z-index:2;display:flex;align-items:center;gap:1.4mm;padding:1.5mm 2.4mm 1.1mm;
+  background:linear-gradient(180deg,#ffffff,#fdf7ee);border-bottom:.5mm solid #cb8738}
+.mcard .band .ar{flex:1;text-align:right;line-height:1.15;min-width:0}
+.mcard .band .ar b{display:block;font-size:calc(5.9pt * var(--fs));font-weight:800;color:#8f5a16;white-space:nowrap;overflow:hidden}
+.mcard .band .ar span{display:block;font-size:calc(5.4pt * var(--fs));color:#6a6157;font-weight:700;white-space:nowrap;overflow:hidden}
+.mcard .band img{height:7mm;flex:0 0 auto}
+.mcard .band .en{flex:1;text-align:left;line-height:1.15;direction:ltr;min-width:0}
+.mcard .band .en b{display:block;font-size:calc(4.9pt * var(--fs));font-weight:800;color:#8f5a16;letter-spacing:0;line-height:1.2;white-space:nowrap;overflow:hidden}
+.mcard .band .en span{display:block;font-size:calc(4.4pt * var(--fs));color:#6a6157;font-weight:700;letter-spacing:.2px;white-space:nowrap;overflow:hidden}
+
+/* جسم البطاقة */
+.mcard .plate{position:relative;z-index:2;height:calc(54mm - 12.4mm);padding:1.8mm 3mm 9.4mm;display:flex;gap:2.4mm;overflow:hidden}
+/* العمود الثاني للبيانات القصيرة (أرقام) والرابع أوسع للبيانات الطويلة (الفرع، الهاتف، التاريخ) */
+.mcard .fields{flex:1;min-width:0;display:grid;grid-template-columns:auto minmax(0,1fr) auto minmax(0,1.1fr);
+  column-gap:1.6mm;align-content:space-between;align-items:center}
+.mcard .fields em{font-style:normal;font-size:calc(5pt * var(--fs));font-weight:800;color:#8f5a16;white-space:nowrap;
+  text-align:right;line-height:1.2}
+.mcard .fields b{min-width:0;font-size:calc(7.2pt * var(--fs));font-weight:800;color:#14110d;line-height:1.25;white-space:nowrap;
+  overflow:hidden;border-bottom:.2mm dotted #d9cdb8;padding-bottom:.3mm;text-align:right}
+.mcard .fields .full{grid-column:2 / -1}
+.mcard .fields .lbl-full{grid-column:1 / 2}
+
+/* الصورة والنسخة الشبحية */
+.mcard .pics{flex:0 0 20mm;display:flex;flex-direction:column;align-items:stretch;padding-top:.2mm}
+.mcard .pic{width:20mm;height:100%;max-height:28mm;border:.35mm solid #cb8738;border-radius:1.2mm;overflow:hidden;
+  background:linear-gradient(180deg,#f7f1e7,#efe6d7);display:grid;place-items:center}
+.mcard .pic img{width:100%;height:100%;object-fit:cover;display:block}
+.mcard .pic svg{width:8mm;height:8mm;stroke:#c9b898;fill:none;stroke-width:1.7}
+.mcard .ghost{width:6mm;height:7.4mm;border-radius:.6mm;overflow:hidden;opacity:.4;filter:grayscale(1);flex:0 0 auto}
+.mcard .ghost img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* الشريط السفلي */
+.mcard .strip{position:absolute;z-index:3;inset:auto 0 0 0;height:9mm;background:linear-gradient(180deg,#fdf7ee,#f6ead8);
+  border-top:.35mm solid #e0cdac;display:flex;align-items:center;gap:2mm;padding:0 3mm}
+.mcard .strip .no{font-size:calc(9pt * var(--fs));font-weight:800;direction:ltr;letter-spacing:.5px;color:#14110d;
+  background:#fff;border:.3mm solid #cb8738;border-radius:1.2mm;padding:.7mm 2.2mm;white-space:nowrap}
+.mcard .strip .lbl{font-size:calc(5.4pt * var(--fs));color:#8f5a16;font-weight:800;line-height:1.2;white-space:nowrap}
+.mcard .strip .sp{flex:1}
+.mcard .qr{width:8.4mm;height:8.4mm;background:#fff;border:.25mm solid #e0cdac;border-radius:.8mm;
+  display:grid;place-items:center;overflow:hidden;flex:0 0 auto;padding:.2mm}
+.mcard .qr canvas,.mcard .qr img{width:100%!important;height:100%!important;display:block;image-rendering:pixelated}
+.mcard .qr em{font-style:normal;font-size:3.6pt;color:#a9a094;text-align:center;line-height:1.1}
+
+/* ---------- الوجه الخلفي ---------- */
+.mcard.back .plate{gap:2.6mm;padding-bottom:11.6mm;padding-top:1.4mm}
+.mcard.back .holo{flex:0 0 17mm;height:17mm;border-radius:1.2mm;align-self:flex-start;margin-top:.6mm;
+  background:conic-gradient(from 210deg,#e9d4ae,#cb8738,#f0e2c6,#a96c28,#e9d4ae);
+  display:grid;place-items:center;box-shadow:inset 0 0 1mm rgba(255,255,255,.7)}
+.mcard.back .holo img{width:12.5mm;opacity:.92}
+.mcard.back .note{font-size:calc(5.6pt * var(--fs));line-height:1.35;color:#3a342c;margin-top:.6mm;white-space:nowrap;overflow:hidden;
+  border-top:.2mm dotted #d9cdb8;padding-top:.7mm;grid-column:1/-1}
+.mcard.back .sigs{display:flex;gap:3mm;margin-top:.4mm;padding-bottom:0;font-size:calc(5.3pt * var(--fs));text-align:center;font-weight:800;
+  grid-column:1/-1}
+.mcard.back .sigs div{flex:1;min-width:0}
+.mcard.back .sigs .sg{position:relative}
+.mcard.back .sigs .sg .im{height:calc(5.2mm * var(--sigk));display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.mcard.back .sigs .sg .im img{max-height:100%;max-width:100%;width:auto;object-fit:contain;mix-blend-mode:multiply;
+  filter:grayscale(1) contrast(var(--sigd))}
+.mcard.back .sigs .sg .ln{border-top:.3mm solid #14110d;padding-top:.6mm;margin-top:.3mm}
+.mcard.back .sigs .sg .nm{display:block;font-weight:700;font-size:calc(5.2pt * var(--fs));color:#4d463d;margin-top:.2mm;
+  white-space:nowrap;overflow:hidden}
+.mcard.back .sigs .sg .tt{display:block;white-space:nowrap;overflow:hidden}
+
+/* شريط أسفل الوجه الخلفي: بيانات التواصل الرسمية ثم سطر التحقق */
+.mcard.back .foot{position:absolute;z-index:3;inset:auto 0 0 0;background:#fbf4e9;border-top:.35mm solid #e0cdac}
+.mcard.back .foot .ct{display:flex;align-items:center;gap:1.6mm;padding:.5mm 3mm .2mm;
+  font-size:calc(4.8pt * var(--fs));font-weight:700;color:#6a6157;white-space:nowrap;overflow:hidden}
+.mcard.back .foot .ct b{color:#8f5a16;font-weight:800}
+.mcard.back .foot .ct span{direction:ltr;unicode-bidi:embed}
+.mcard.back .foot .ct .sp{flex:1}
+.mcard.back .code{height:6.6mm;display:flex;align-items:center;padding:0 3mm;border-top:.2mm dotted #e0cdac;
+  font-family:"Courier New",monospace;font-size:calc(6.2pt * var(--fs));
+  font-weight:700;letter-spacing:.6px;color:#4d463d;direction:ltr;overflow:hidden;white-space:nowrap}
+
+@media (max-width:420px){ .mcards{gap:10px} .mcard{transform:scale(.9);transform-origin:top center} }
+#cardPrintArea{display:none}
+@page{ size:A4 portrait; margin:12mm }
+@media print{
+  body.printing-cards > *{display:none!important}
+  body.printing-cards #cardPrintArea{display:block!important}
+  #cardPrintArea .mcards{padding-top:6mm}
+  .mcards{gap:8mm}
+  .mcard{box-shadow:none;page-break-inside:avoid;break-inside:avoid;overflow:hidden;transform:none!important}
+  .mcard,.mcard *{-webkit-print-color-adjust:exact;print-color-adjust:exact;
+    -webkit-text-size-adjust:none;text-size-adjust:none}
+}
+</style>
+
+<script>
+/* ============ عناصر الرسم الأمنية ============ */
+
+/** نقشة «الغيوش» — حلقات متداخلة كالتي تُستخدم في الوثائق الرسمية */
+function guillocheSVG_(seed){
+  var cx=214, cy=135, out='';
+  for (var i=0;i<26;i++){
+    var a=(i*180/26);
+    out += '<ellipse cx="'+cx+'" cy="'+cy+'" rx="150" ry="44" transform="rotate('+a+' '+cx+' '+cy+')"/>';
+  }
+  for (var j=0;j<18;j++){
+    var b=(j*180/18);
+    out += '<ellipse cx="'+cx+'" cy="'+cy+'" rx="96" ry="26" transform="rotate('+b+' '+cx+' '+cy+')"/>';
+  }
+  var lines='';
+  for (var k=0;k<34;k++){
+    lines += '<path d="M0 '+(k*8)+' Q 107 '+(k*8-9)+' 214 '+(k*8)+' T 428 '+(k*8)+'"/>';
+  }
+  return '<svg viewBox="0 0 428 270" preserveAspectRatio="none">'+
+    '<rect width="428" height="270" fill="#fffdf9"/>'+
+    '<g fill="none" stroke="#cb8738" stroke-width=".5" opacity=".18">'+lines+'</g>'+
+    '<g fill="none" stroke="#a96c28" stroke-width=".45" opacity=".22">'+out+'</g>'+
+    '</svg>';
+}
+
+/** خلفية الطائر: علامة مائية كبيرة + نقشة متكرّرة من شعار الطائر */
+function birdLayers_(mark){
+  if(!mark) return '';
+  return '<div class="birds" style="background-image:url('+mark+')"></div>'+
+         '<div class="wmk"><img src="'+mark+'" alt=""></div>';
+}
+
+/** خانتا التوقيع مع صورة التوقيع واسم صاحبه */
+function sigBlock(d){
+  var e = function(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];}); };
+  var one = function(img, title, name){
+    return '<div class="sg">'+
+      '<div class="im">'+(img?'<img src="'+img+'" alt="توقيع">':'')+'</div>'+
+      '<div class="ln"><span class="fit tt">'+e(title)+'</span><span class="nm fit">'+e(name||'')+'</span></div>'+
+    '</div>';
+  };
+  return '<div class="sigs">'+
+    one(d.mmSig, 'مساعد الأمين العام للعضوية', d.mmName)+
+    one(d.sgSig, 'الأمين العام', d.sgName)+
+  '</div>';
+}
+
+/* ============ بناء البطاقة ============ */
+/**
+ * d = { name, memberNo, memberDate, nid, dob, gov, district, committees, phone, capacity,
+ *       photo, party, phones, address, website, qrUrl, qrImg, logo, mark, sigCard, sigDark }
+ */
+function buildMemberCard(d){
+  var e = function(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];}); };
+  var num = function(v, def, lo, hi){ v = Number(v); if(!isFinite(v) || !v) v = def; return Math.min(hi, Math.max(lo, v)); };
+  var sigk = num(d.sigCard, 130, 70, 260) / 100;   // حجم التوقيع
+  var sigd = num(d.sigDark, 180, 100, 400) / 100;  // درجة التغميق
+  var vars = ' style="--sigk:'+sigk.toFixed(2)+';--sigd:'+sigd.toFixed(2)+'"';
+
+  var photoImg = d.photo
+    ? '<img src="'+d.photo+'" alt="صورة العضو">'
+    : '<svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 21c0-4.1 3.4-7.5 7.5-7.5s7.5 3.4 7.5 7.5"/></svg>';
+  var ghost = d.photo ? '<div class="ghost"><img src="'+d.photo+'" alt=""></div>' : '';
+  var mark = d.mark || d.logo || '';
+
+  var band =
+    '<div class="band">'+
+      '<div class="ar"><b class="fit">'+e(d.party)+'</b><span class="fit">بطاقة عضوية حزبية</span></div>'+
+      '<img src="'+(d.logo||'')+'" alt="شعار الحزب">'+
+      '<div class="en"><b class="fit">JORDANIAN CIVIL DEMOCRATIC PARTY</b><span class="fit">MEMBERSHIP CARD</span></div>'+
+    '</div>';
+
+  // سطر بعمودين (عنوان + قيمة) يمتد على كامل العرض
+  var row1 = function(label, val){
+    return '<em class="fit lbl-full">'+e(label)+'</em><b class="fit full">'+e(val||'—')+'</b>';
+  };
+  // سطر بأربعة أعمدة (عنوانان وقيمتان) — محاذاة عمودية موحّدة
+  var row2 = function(l1, v1, l2, v2){
+    return '<em class="fit">'+e(l1)+'</em><b class="fit">'+e(v1||'—')+'</b>'+
+           '<em class="fit">'+e(l2)+'</em><b class="fit">'+e(v2||'—')+'</b>';
+  };
+  // اختصار أسماء اللجان لتبقى في سطر واحد — الفاصل «/»
+  var shortCom = function(v){
+    return String(v||'').replace(/\s*[+＋]\s*/g,' / ').replace(/\s+و\s+/g,' / ')
+                        .replace(/اللجنة\s+/g,'').replace(/لجنة\s+/g,'')
+                        .replace(/\s*\/\s*/g,' / ').trim();
+  };
+
+  // اختصار اسم الدائرة: تُحذف لاحقة المدينة لأن المحافظة مكتوبة في الخانة المجاورة
+  var shortDist = function(v){
+    var s = String(v||'').replace(/الدائرة\s+الانتخابية/g,'الدائرة').replace(/محافظة\s+/g,'').trim();
+    if (/^الدائرة/.test(s) && /[—–-]/.test(s)) s = s.split(/[—–-]/)[0].trim();
+    return s;
+  };
+
+  var qrCell =
+    '<div class="qr" data-qr="'+e(d.qrUrl||'')+'">'+
+      (d.qrImg ? '<img src="'+d.qrImg+'" alt="رمز التحقق">' : '<em>رمز<br>التحقق</em>')+
+    '</div>';
+
+  var front =
+  '<div class="mcard front"'+vars+'>'+
+    '<div class="sec-bg">'+guillocheSVG_()+'</div>'+
+    birdLayers_(mark)+
+    '<div class="tint"></div>'+
+    band+
+    '<div class="plate">'+
+      '<div class="fields">'+
+        row1('الاسم', d.name)+
+        row2('الرقم الوطني', d.nid, 'الميلاد', d.dob)+
+        row2('المحافظة', d.gov, 'الفرع', shortDist(d.district))+
+        row1('اللجان', shortCom(d.committees))+
+      '</div>'+
+      '<div class="pics"><div class="pic">'+photoImg+'</div></div>'+
+    '</div>'+
+    '<div class="strip">'+
+      ghost+
+      '<div class="lbl">رقم<br>العضوية</div>'+
+      '<div class="no">'+e(d.memberNo)+'</div>'+
+      '<div class="sp"></div>'+
+      '<div class="lbl" style="text-align:left">للتحقق<br>امسح الرمز</div>'+
+      qrCell+
+    '</div>'+
+  '</div>';
+
+  var codeLine = ('JCDP<' + String(d.memberNo||'').replace(/^JCDP[-\s]?/i,'').replace(/[^0-9A-Za-z]/g,'<') + '<<' +
+                  String(d.nid||'').replace(/\D/g,'') + '<<' +
+                  String(d.memberDate||'').replace(/\D/g,'')).toUpperCase();
+  codeLine = (codeLine + '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<').substring(0,56);
+
+  var back =
+  '<div class="mcard back"'+vars+'>'+
+    '<div class="sec-bg">'+guillocheSVG_()+'</div>'+
+    birdLayers_(mark)+
+    '<div class="tint"></div>'+
+    band+
+    '<div class="plate" style="flex-direction:row-reverse">'+
+      '<div class="fields">'+
+        row2('الصفة', d.capacity || 'منتسب', 'تاريخ العضوية', d.memberDate)+
+        row2('الإصدار', 'عمّان', 'هاتف العضو', d.phone)+
+        '<div class="note fit">البطاقة ملك للحزب وغير قابلة للتحويل، وتُعاد عند انتهاء العضوية.</div>'+
+        sigBlock(d)+
+      '</div>'+
+      '<div class="holo"><img src="'+(d.logo||'')+'" alt=""></div>'+
+    '</div>'+
+    '<div class="foot">'+
+      '<div class="ct fit"><b>هاتف الحزب:</b> <span>'+e(d.phones||'')+'</span>'+
+        '<span class="sp"></span><b>الموقع:</b> <span>'+e(d.website||'')+'</span></div>'+
+      '<div class="code fit">'+e(codeLine)+'</div>'+
+    '</div>'+
+  '</div>';
+
+  return '<div class="mcards">'+front+back+'</div>';
+}
+
+/* إعادة ضبط أحجام النصوص قبل أي طباعة يطلبها المتصفح، وعند تغيّر حجم النافذة */
+if (typeof window !== 'undefined' && !window.__cardPrintHook){
+  window.__cardPrintHook = true;
+  window.addEventListener('beforeprint', function(){ try{ fitCardText(document); }catch(e){} });
+  var rz;
+  window.addEventListener('resize', function(){
+    clearTimeout(rz); rz = setTimeout(function(){ try{ fitCardText(document); }catch(e){} }, 150);
+  });
+}
+
+/**
+ * تشغيل القياس أكثر من مرة: فوراً، ثم بعد تحميل الخطوط والصور، ثم مرة أخيرة.
+ * هذا هو سبب ظهور نصوص مقصوصة سابقاً: كان القياس يتم بخط بديل أضيق قبل وصول خط Tajawal.
+ */
+function scheduleCardFit(root){
+  var run = function(){ try{ fitCardText(root); }catch(e){} };
+  run();
+  if (typeof requestAnimationFrame === 'function') requestAnimationFrame(run);
+  try{
+    if (document.fonts && document.fonts.ready && document.fonts.ready.then) document.fonts.ready.then(run);
+    if (document.fonts && document.fonts.load){
+      ['800 8pt Tajawal','700 8pt Tajawal'].forEach(function(f){
+        try{ document.fonts.load(f, 'الحزب').then(run); }catch(e){}
+      });
+    }
+  }catch(e){}
+  // صور الشعار والتوقيع قد تُغيّر الأبعاد بعد تحميلها
+  (root||document).querySelectorAll('.mcard img').forEach(function(im){
+    if(!im.complete) im.addEventListener('load', run, { once:true });
+  });
+  [120, 400, 900, 1800].forEach(function(ms){ setTimeout(run, ms); });
+}
+
+/** طباعة البطاقتين وحدهما */
+function printCards(srcId){
+  var box = document.getElementById(srcId || 'cardBox');
+  var src = box && box.querySelector('.mcards');
+  if(!src) return;
+  var area = document.getElementById('cardPrintArea');
+  if(!area){ area = document.createElement('div'); area.id = 'cardPrintArea'; document.body.appendChild(area); }
+  area.innerHTML = src.outerHTML;
+  renderCardQR(area);
+  document.body.classList.add('printing-cards');
+  setTimeout(function(){
+    try{ fitCardText(area); }catch(e){}     // قياس أخير بعد استقرار الخطوط والصور
+    window.print();
+    setTimeout(function(){ document.body.classList.remove('printing-cards'); }, 500);
+  }, 900);
+}
+
+/** تصغير تلقائي للنصوص حتى تظهر كاملة في سطر واحد دون قصّ — أفقياً ثم عمودياً */
+function fitCardText(root){
+  var scope = root || document;
+
+  // 1) تصغير عام إذا تجاوز المحتوى ارتفاع البطاقة
+  scope.querySelectorAll('.mcard').forEach(function(card){
+    card.style.setProperty('--fs','1');
+    var plate = card.querySelector('.plate');
+    if(!plate) return;
+    var f = 1, guard = 0;
+    while (plate.scrollHeight > plate.clientHeight + 0.5 && f > 0.62 && guard++ < 40){
+      f -= 0.03;
+      card.style.setProperty('--fs', f.toFixed(2));
+    }
+    // إن بقي ضغط على التواقيع، صغّر صندوق التوقيع تدريجياً
+    var k = parseFloat(getComputedStyle(card).getPropertyValue('--sigk')) || 1.3;
+    guard = 0;
+    while (plate.scrollHeight > plate.clientHeight + 0.5 && k > 0.6 && guard++ < 30){
+      k -= 0.05;
+      card.style.setProperty('--sigk', k.toFixed(2));
+    }
+  });
+
+  // 2) تصغير كل نص لا يتّسع في سطره
+  scope.querySelectorAll('.mcard .fit').forEach(function(el){
+    el.style.fontSize = '';
+    el.style.transform = '';
+    el.style.letterSpacing = '';
+    var px = parseFloat(window.getComputedStyle(el).fontSize) || 10;
+    var guard = 0;
+    var over = function(){ return el.scrollWidth > el.clientWidth + 0.5; };
+    while (over() && px > 3.4 && guard++ < 90){
+      px -= 0.25;
+      el.style.fontSize = px + 'px';
+    }
+    // ضمان أخير: إن بقي النص أعرض من خانته، اضغطه أفقياً بدل قصّه
+    if (over() && el.clientWidth > 0){
+      var r = Math.max(0.62, (el.clientWidth - 1) / el.scrollWidth);
+      if (window.getComputedStyle(el).display === 'inline') el.style.display = 'inline-block';
+      el.style.transformOrigin = 'right center';
+      el.style.transform = 'scaleX(' + r.toFixed(3) + ')';
+    }
+  });
+}
+
+/** رسم رمز التحقق داخل البطاقات بعد إدراجها */
+function renderCardQR(root){
+  scheduleCardFit(root);
+  (root||document).querySelectorAll('.qr[data-qr]').forEach(function(box){
+    var url = box.dataset.qr;
+    if(!url) return;
+    if(box.querySelector('img')) return;             // رمز جاهز من الخادم
+    try{
+      if(typeof QRCode !== 'undefined'){
+        box.innerHTML='';
+        new QRCode(box, { text:url, width:200, height:200,
+          colorDark:'#000000', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.M });
+      }
+    }catch(err){ /* يبقى النص البديل */ }
+  });
+}
+</script>
+
+<style>
+.wrap-wide{max-width:1320px;margin:0 auto;padding:0 16px 56px}
+.tabs{display:flex;gap:6px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:8px;margin-top:16px;box-shadow:var(--shadow);flex-wrap:wrap}
+.tab{padding:10px 22px;border-radius:9px;font-weight:700;font-size:15px;color:var(--muted);cursor:pointer;border:0;background:transparent;font-family:inherit}
+.tab.on{background:var(--brand);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-top:16px}
+@media (max-width:980px){ .stats{grid-template-columns:repeat(3,1fr)} }
+@media (max-width:560px){ .stats{grid-template-columns:repeat(2,1fr)} }
+.stat{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;box-shadow:var(--shadow);border-top:3px solid var(--brand)}
+.stat b{display:block;font-size:24px;font-weight:800;color:var(--brand-dark);line-height:1.25}
+.stat span{font-size:12.5px;color:var(--muted);font-weight:600}
+.stat.ok{border-top-color:var(--ok)} .stat.ok b{color:var(--ok)}
+.stat.err{border-top-color:var(--err)} .stat.err b{color:var(--err)}
+.stat.warn{border-top-color:var(--warn)} .stat.warn b{color:var(--warn)}
+.toolbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px 12px;margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+@media (max-width:900px){ .toolbar{grid-template-columns:repeat(2,1fr)} }
+.toolbar .btns{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap}
+.tablewrap{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:auto;max-height:66vh}
+table{border-collapse:collapse;width:100%;font-size:13.8px;white-space:nowrap}
+th{background:var(--brand);color:#fff;font-weight:700;padding:10px 11px;text-align:right;position:sticky;top:0;z-index:2}
+td{padding:9px 11px;border-bottom:1px solid var(--line)}
+tbody tr:hover{background:var(--brand-050);cursor:pointer}
+.pill{display:inline-block;border-radius:99px;padding:3px 11px;font-size:12px;font-weight:700}
+.p-new{background:var(--brand-050);color:var(--brand-dark)} .p-rev{background:#f3e8d8;color:#8a5a1c}
+.p-ok{background:var(--ok-bg);color:var(--ok)} .p-mem{background:#d9f0e3;color:#125e37}
+.p-no{background:var(--err-bg);color:var(--err)} .p-wait{background:var(--warn-bg);color:var(--warn)}
+.rep{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}
+@media (max-width:860px){ .rep{grid-template-columns:1fr} }
+.rep .card{margin-top:0}
+.rowbar{display:grid;grid-template-columns:minmax(120px,1.2fr) 52px 1fr 48px;align-items:center;gap:8px;font-size:14px;padding:5px 0;border-bottom:1px dashed var(--line)}
+.rowbar b{font-weight:700;color:var(--brand-dark);text-align:center}
+.rowbar i{display:block;height:9px;border-radius:99px;background:var(--brand)}
+.rowbar .t{background:var(--brand-100);border-radius:99px;height:9px;overflow:hidden}
+.rowbar em{font-style:normal;color:var(--muted);font-size:12.5px;text-align:left}
+.modal{position:fixed;inset:0;background:rgba(51,47,42,.55);display:none;z-index:60;overflow:auto;padding:16px}
+.modal.show{display:block}
+.sheet{max-width:880px;margin:16px auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.sheet-h{background:var(--brand);color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.sheet-h b{font-size:16.5px}
+.sheet-h button{background:transparent;border:0;color:#fff;font-size:26px;cursor:pointer;line-height:1}
+.sheet-b{padding:18px}
+.dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px 16px;font-size:14px}
+@media (max-width:760px){ .dl{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:520px){ .dl{grid-template-columns:1fr} }
+.dl div{border-bottom:1px dashed var(--line);padding-bottom:5px}
+.dl .k{color:var(--muted);font-size:12px;display:block;font-weight:700}
+.links{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.links a{background:var(--brand-050);color:var(--brand-dark);border:1px solid var(--brand-100);border-radius:9px;padding:9px 14px;text-decoration:none;font-weight:700;font-size:14px}
+.login{max-width:440px;margin:50px auto}
+.who{font-size:12.5px;color:#fae9d5}
+.btn-wa{background:var(--wa);color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.btn-wa:hover{background:#0f7a6c}
+.btn-wa.off{background:#c3bcb2;pointer-events:none}
+.wa-box{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  background:#e9f7f3;border:1px solid #bfe3da;border-radius:11px;padding:14px;margin-top:6px}
+.wa-prev{margin-top:8px;font-size:13px;color:var(--muted)}
+.wa-prev summary{cursor:pointer;font-weight:700;color:var(--brand-dark)}
+.wa-prev pre{white-space:pre-wrap;background:#fbf9f6;border:1px solid var(--line);border-radius:9px;padding:12px;font-family:inherit;font-size:13.5px;color:var(--ink);line-height:1.8;margin:8px 0 0}
+.wa-cell{color:var(--wa);font-weight:700;text-decoration:none}
+#printArea{display:none}
+@page{ size:A4; margin:10mm }
+@media print{
+  body.printing > *{display:none!important}
+  body.printing #printArea{display:block!important}
+  #printArea{font-size:12.5px}
+  #printArea table{white-space:normal}
+  #printArea th{background:#cb8738!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #printArea *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
+/* ===== نموذج الطلب الواحد على صفحة A4 ===== */
+.a4{width:190mm;page-break-after:avoid;font-family:'Tajawal',Tahoma,Arial,sans-serif;color:#000;font-size:9.6pt;line-height:1.5}
+.a4 .ah{display:flex;align-items:center;gap:8mm;border-bottom:2.2pt solid #cb8738;padding-bottom:2.4mm;margin-bottom:2.8mm;page-break-inside:avoid}
+.a4 .ah img{height:16.5mm}
+.a4 .ah .t{flex:1;text-align:center}
+.a4 .ah .t h1{margin:0;font-size:14pt;color:#a96c28;font-weight:800}
+.a4 .ah .t h2{margin:1mm 0 0;font-size:11pt;font-weight:700;color:#000}
+.a4 .ah .r{text-align:left;font-size:8.6pt;line-height:1.7}
+.a4 .ah .r b{display:block;font-size:11pt;color:#a96c28;direction:ltr}
+.a4 .sec{margin-top:1.8mm;page-break-inside:avoid}
+.a4 .sec > h3{margin:0 0 1.4mm;background:#cb8738;color:#fff;font-size:9.6pt;font-weight:700;padding:1.1mm 2.5mm;border-radius:1.2mm}
+.a4 .rowz{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.a4 .rowz.two{grid-template-columns:repeat(2,1fr)}
+.a4 .rowz .c{border-bottom:.5pt dotted #b9ae9f;padding:.7mm 2mm;min-height:6.2mm}
+.a4 .rowz .c span{display:block;font-size:7.6pt;color:#6a6157;font-weight:700;line-height:1.3}
+.a4 .rowz .c div{font-size:9.6pt;font-weight:700;color:#000;line-height:1.4;word-break:break-word}
+.a4 .wide{grid-column:1/-1}
+.a4 .note{border:.6pt solid #d8ccbb;border-radius:1.5mm;padding:1.2mm 2.5mm;min-height:7.5mm;font-size:8.8pt;line-height:1.5}
+.a4 .att{display:flex;gap:3mm;font-size:8.6pt;margin-top:1.2mm}
+.a4 .att span{border:.6pt solid #cb8738;border-radius:1.2mm;padding:.9mm 2.5mm}
+.a4 .sign{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm;margin-top:6mm;font-size:8.8pt;page-break-inside:avoid}
+.a4 .sign.four{grid-template-columns:repeat(4,1fr);gap:3.5mm;margin-top:4mm}
+.a4 .sign div{border-top:.8pt solid #000;padding-top:1.4mm;text-align:center;font-weight:700}
+.a4 .sign em{display:block;font-style:normal;font-weight:400;font-size:7.6pt;color:#6a6157;margin-top:.6mm}
+.a4 .sign .wsig{position:relative}
+.a4 .sign .wsig img{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);
+  max-height:calc(9mm * var(--sigp,1.2));max-width:96%;
+  object-fit:contain;mix-blend-mode:multiply;margin-bottom:.4mm;
+  filter:grayscale(1) contrast(var(--sigd,1.8))}
+.a4 .foot{margin-top:2.2mm;display:flex;justify-content:space-between;align-items:flex-end;font-size:8pt;color:#6a6157;border-top:.6pt solid #e9e0d4;padding-top:1.6mm}
+.a4 .stat{display:inline-block;border:1pt solid #cb8738;color:#a96c28;border-radius:1.5mm;padding:.8mm 3mm;font-weight:800;font-size:9.6pt}
+.phead{border-bottom:3px solid var(--brand);padding-bottom:10px;margin-bottom:14px}
+.phead h1{margin:0;font-size:19px;color:var(--brand-dark)}
+.phead p{margin:2px 0 0;font-size:12px;color:var(--muted)}
+.psign{margin-top:26px;font-size:13px;line-height:1.9}
+.sigbox{height:90px;border:1px dashed var(--line-2);border-radius:10px;background:#fffdf9;
+  display:grid;place-items:center;overflow:hidden;color:var(--muted);font-size:13px}
+input[type=range]{accent-color:var(--brand);height:30px}
+.sigbox img{max-height:100%;max-width:100%;object-fit:contain;
+  filter:grayscale(1) contrast(var(--sigd,1.8))}
+
+/* ===== أداة صورة العضو ===== */
+.ptool{display:grid;grid-template-columns:1fr 210px;gap:16px;align-items:start}
+@media (max-width:700px){ .ptool{grid-template-columns:1fr} }
+.pstage{position:relative;background:#efe9e0;border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  height:300px;display:grid;place-items:center;touch-action:none;cursor:grab}
+.pstage.drag{cursor:grabbing}
+.pstage canvas{max-width:100%;max-height:100%;display:block}
+.pstage .empty{color:var(--muted);font-size:14px;text-align:center;padding:20px}
+.pctl{display:flex;flex-direction:column;gap:10px}
+.pctl .prev{width:100%;aspect-ratio:4/5;border:2px solid var(--brand);border-radius:10px;overflow:hidden;background:#f4eee5;display:grid;place-items:center}
+.pctl .prev img{width:100%;height:100%;object-fit:cover}
+.pctl .prev span{color:var(--muted);font-size:13px}
+.pctl label{font-size:13px;font-weight:700}
+.pctl input[type=range]{width:100%;accent-color:var(--brand)}
+.psrc{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.psrc button{font-family:inherit;font-size:13.5px;font-weight:700;padding:8px 12px;border-radius:8px;
+  border:1px solid var(--line-2);background:#fff;color:var(--ink-2);cursor:pointer}
+.psrc button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+
+/* ===== الهاتف ===== */
+@media (max-width:680px){
+  .wrap-wide{padding:0 12px 44px}
+  .tabs{padding:6px;gap:4px}
+  .tab{padding:10px 12px;font-size:13.5px;flex:1 1 auto;text-align:center}
+  .toolbar{grid-template-columns:1fr;padding:12px;gap:10px}
+  .toolbar .btns{gap:8px}
+  .toolbar .btns .btn{flex:1 1 45%;padding:12px 8px;font-size:14px;min-height:46px}
+  .stats{gap:8px}
+  .stat{padding:10px 12px}
+  .stat b{font-size:20px}
+  .stat span{font-size:11.5px}
+  .tablewrap{max-height:none}
+  table{font-size:13px}
+  th,td{padding:8px 9px}
+  .sheet{margin:6px auto;border-radius:12px}
+  .sheet-h{padding:12px 14px}
+  .sheet-h b{font-size:14.5px}
+  .sheet-b{padding:14px}
+  .dl{grid-template-columns:1fr}
+  .rep{gap:12px}
+  .rowbar{grid-template-columns:minmax(90px,1.2fr) 42px 1fr 42px;font-size:13.5px}
+  .wa-box{flex-direction:column;align-items:stretch;text-align:center;gap:10px}
+  .wa-box .btn{width:100%;justify-content:center}
+  .who{max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .login{margin:20px auto}
+}
+</style>
+<script src="config.js"></script>
+<script src="api.js"></script>
+<script src="boot.js"></script>
+</head>
+<body>
+
+<header class="topbar no-print">
+  <div class="topbar-in" style="max-width:1320px">
+    <div class="crest"><img src="bird.png" alt="شعار الحزب"></div>
+    <div class="brand" style="flex:1">
+      <h1 id="hTitle">لوحة إدارة العضوية</h1>
+      <p>JORDANIAN CIVIL DEMOCRATIC PARTY — MEMBERSHIP DESK</p>
+    </div>
+    <div style="text-align:left">
+      <div class="who" id="who"></div>
+      <button class="back" id="btnOut" hidden style="padding:5px 12px;margin-top:4px">خروج</button>
+    </div>
+  </div>
+</header>
+
+<!-- ===== الدخول ===== -->
+<div class="wrap login" id="loginBox">
+  <div class="card">
+    <h3>دخول مدير التطبيق</h3>
+    <p class="sub">أدخل رقمك الوطني المسجّل لدى الحزب، فيتعرّف النظام عليك ويمنحك صلاحيات الإدارة الكاملة.</p>
+    <div class="field nid-wrap"><label>الرقم الوطني</label>
+      <input type="tel" id="nid" inputmode="numeric" maxlength="10" placeholder="——————————"></div>
+    <div class="field" id="passField"><label>كلمة المرور</label>
+      <input type="password" id="pass" placeholder="••••••••"></div>
+    <div class="alert alert-err" id="loginErr"></div>
+    <div class="actions"><span class="spacer"></span><button class="btn btn-primary" id="btnLogin">دخول</button></div>
+  </div>
+</div>
+
+<!-- ===== اللوحة ===== -->
+<div class="wrap-wide" id="panel" hidden>
+  <div class="tabs no-print">
+    <button class="tab on" data-v="apps">الطلبات والعضوية</button>
+    <button class="tab" data-v="rep">التقارير والإحصاءات</button>
+    <button class="tab" data-v="set">الإعدادات</button>
+  </div>
+
+  <!-- ===== الطلبات ===== -->
+  <div id="vApps">
+    <div class="stats">
+      <div class="stat"><b id="sTotal">0</b><span>إجمالي الطلبات</span></div>
+      <div class="stat"><b id="sNew">0</b><span>تم الاستلام</span></div>
+      <div class="stat"><b id="sRev">0</b><span>قيد المراجعة</span></div>
+      <div class="stat warn"><b id="sWait">0</b><span>بانتظار استكمال</span></div>
+      <div class="stat ok"><b id="sApp">0</b><span>بانتظار الهيئة المستقلة</span></div>
+      <div class="stat"><b id="sMem">0</b><span>أعضاء عاملون</span></div>
+    </div>
+
+    <div class="toolbar no-print">
+      <div class="field"><label>بحث</label><input type="text" id="q" placeholder="اسم، رقم وطني، هاتف، رقم طلب"></div>
+      <div class="field"><label>الحالة</label><select id="fStatus"></select></div>
+      <div class="field"><label>الجنس</label><select id="fGender"></select></div>
+      <div class="field"><label>الفئة العمرية</label><select id="fAge"></select></div>
+      <div class="field"><label>المحافظة</label><select id="fGov"></select></div>
+      <div class="field"><label>الدائرة الانتخابية</label><select id="fDist"></select></div>
+      <div class="field"><label>اللجنة</label><select id="fCom"></select></div>
+      <div class="field"><label>المؤهل العلمي</label><select id="fEdu"></select></div>
+      <div class="btns">
+        <button class="btn btn-ghost" id="btnRefresh">تحديث البيانات</button>
+        <button class="btn btn-ghost" id="btnClear">إلغاء الفلاتر</button>
+        <button class="btn btn-primary" id="btnPrint">طباعة الكشف</button>
+        <button class="btn btn-ghost" id="btnCsv">تصدير CSV</button>
+      </div>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr>
+          <th>رقم الطلب</th><th>التاريخ</th><th>الاسم الرباعي</th><th>الرقم الوطني</th><th>الهاتف</th>
+          <th>العمر</th><th>الفئة</th><th>الجنس</th><th>المحافظة</th><th>الدائرة الانتخابية</th>
+          <th>اللجان</th><th>الحالة</th><th>واتساب</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <p class="footer" id="count">—</p>
+  </div>
+
+  <!-- ===== التقارير ===== -->
+  <div id="vRep" hidden>
+    <div class="stats">
+      <div class="stat"><b id="rTotal">0</b><span>إجمالي الطلبات</span></div>
+      <div class="stat"><b id="rMale">0</b><span>ذكور</span></div>
+      <div class="stat"><b id="rFemale">0</b><span>إناث</span></div>
+      <div class="stat ok"><b id="rYouth">0</b><span>شباب (35 فأقل)</span></div>
+      <div class="stat"><b id="rOld">0</b><span>فوق 35 سنة</span></div>
+      <div class="stat"><b id="rMem2">0</b><span>أعضاء عاملون</span></div>
+    </div>
+    <div class="no-print" style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary" id="btnPrintRep">طباعة التقرير</button>
+      <span style="align-self:center;color:var(--muted);font-size:13.5px">التقارير محسوبة على النتائج بعد الفلترة في تبويب الطلبات.</span>
+    </div>
+    <div class="rep" id="repBox"></div>
+  </div>
+
+  <!-- ===== الإعدادات ===== -->
+  <div id="vSet" hidden>
+    <div class="card">
+      <h3>إعدادات التطبيق</h3>
+      <p class="sub">تُحفظ مباشرة في ورقة «الإعدادات» داخل جدول البيانات، وتسري على النموذج والرسائل فوراً.</p>
+      <div class="grid" id="setBox"></div>
+      <div class="alert alert-ok" id="setOk"></div>
+      <div class="alert alert-err" id="setErr"></div>
+      <div class="actions">
+        <button class="btn btn-ghost" id="setReload">استرجاع القيم</button>
+        <span class="spacer"></span>
+        <button class="btn btn-primary" id="setSave">حفظ الإعدادات</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>تواقيع المسؤولين</h3>
+      <p class="sub">تُستخدم في بطاقة العضوية وفي مطبوعة الطلب. ارفع صورة التوقيع بخلفية بيضاء أو شفافة (PNG أفضل).
+        وعند تغيّر المسؤول، غيّر اسمه في الحقول أعلاه وارفع توقيعه الجديد هنا — ويُطبَّق فوراً على كل ما يُطبع لاحقاً.</p>
+      <div class="grid">
+        <div class="field">
+          <label>توقيع مساعد الأمين العام لشؤون العضوية</label>
+          <div class="sigbox" id="sigBoxMm"><span>لا يوجد توقيع محفوظ</span></div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="btn btn-ghost" data-sigup="mm" style="flex:1;min-height:44px;padding:9px">رفع / استبدال</button>
+            <button class="btn btn-ghost" data-sigdel="mm" style="min-height:44px;padding:9px 14px">حذف</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>توقيع الأمين العام</label>
+          <div class="sigbox" id="sigBoxSg"><span>لا يوجد توقيع محفوظ</span></div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="btn btn-ghost" data-sigup="sg" style="flex:1;min-height:44px;padding:9px">رفع / استبدال</button>
+            <button class="btn btn-ghost" data-sigdel="sg" style="min-height:44px;padding:9px 14px">حذف</button>
+          </div>
+        </div>
+      </div>
+      <input type="file" id="sigFile" accept="image/*" hidden>
+      <div class="alert alert-ok" id="sigOk"></div>
+
+      <h3 style="margin-top:14px">ضبط ظهور التواقيع</h3>
+      <p class="sub">حرّك المؤشرات حتى يصبح التوقيع بالحجم والوضوح المطلوبين — المعاينة أعلاه تتغيّر فوراً، ثم احفظ.</p>
+      <div class="grid">
+        <div class="field">
+          <label>حجم التوقيع في بطاقة العضوية — <b id="sigCardV">130%</b></label>
+          <input type="range" id="sigCardR" min="70" max="260" step="5" value="130" style="width:100%">
+        </div>
+        <div class="field">
+          <label>حجم التوقيع في مطبوعة الطلب — <b id="sigPrintV">120%</b></label>
+          <input type="range" id="sigPrintR" min="70" max="260" step="5" value="120" style="width:100%">
+        </div>
+        <div class="field full">
+          <label>درجة تغميق التوقيع (وضوحه من بعيد) — <b id="sigDarkV">180%</b></label>
+          <input type="range" id="sigDarkR" min="100" max="400" step="10" value="180" style="width:100%">
+        </div>
+      </div>
+      <div class="actions">
+        <span class="spacer"></span>
+        <button class="btn btn-primary" id="sigTuneSave">حفظ إعدادات التواقيع</button>
+      </div>
+      <div class="alert alert-ok" id="sigTuneOk"></div>
+    </div>
+
+    <div class="card">
+      <h3>روابط التطبيق</h3>
+      <div class="home-info" id="linkBox"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== تفاصيل الطلب ===== -->
+<div class="modal" id="modal">
+  <div class="sheet">
+    <div class="sheet-h"><b id="mRef">—</b><button id="mClose">×</button></div>
+    <div class="sheet-b">
+      <div class="dl" id="mBody"></div>
+      <div class="links" id="mLinks"></div>
+
+      <div class="card" style="margin-top:6px;box-shadow:none">
+        <h3>صورة العضو لبطاقة العضوية</h3>
+        <p class="sub">اسحب الصورة لضبط موضع الوجه داخل الإطار، وكبّرها أو صغّرها، ثم احفظ. تُقص بمقاس البطاقة تلقائياً.</p>
+        <div class="psrc" id="pSrc">
+          <button type="button" data-src="photo">الصورة الشخصية المرفقة</button>
+          <button type="button" data-src="idFront">من صورة الهوية (الوجه)</button>
+          <button type="button" data-src="idBack">من صورة الهوية (الظهر)</button>
+          <button type="button" id="pUploadBtn">رفع صورة من الجهاز</button>
+          <input type="file" id="pUpload" accept="image/*" hidden>
+        </div>
+        <div class="ptool">
+          <div class="pstage" id="pStage"><div class="empty" id="pEmpty">اختر مصدر الصورة من الأزرار أعلاه</div></div>
+          <div class="pctl">
+            <div class="prev" id="pPrev"><span>المعاينة</span></div>
+            <div><label>التكبير</label><input type="range" id="pZoom" min="100" max="500" value="100"></div>
+            <div><label>التدوير</label><input type="range" id="pRot" min="-180" max="180" value="0"></div>
+            <div style="display:flex;gap:6px">
+              <button type="button" class="btn btn-ghost" id="pRotL" style="flex:1;min-height:38px;padding:6px;font-size:13.5px">↺ 90°</button>
+              <button type="button" class="btn btn-ghost" id="pRotR" style="flex:1;min-height:38px;padding:6px;font-size:13.5px">90° ↻</button>
+            </div>
+            <label class="check" style="margin-top:0;padding:8px 10px"><input type="checkbox" id="pBg">
+              <span style="font-size:13.5px">إزالة الخلفية (تبييض)</span></label>
+            <div id="pBgRow" hidden><label>شدة الإزالة</label><input type="range" id="pBgTol" min="10" max="90" value="38"></div>
+            <div><label>السطوع</label><input type="range" id="pBright" min="60" max="160" value="100"></div>
+            <div><label>التباين</label><input type="range" id="pContrast" min="60" max="180" value="100"></div>
+            <button class="btn btn-primary" id="pSave" style="min-height:44px;padding:10px">حفظ الصورة</button>
+            <button class="btn btn-ghost" id="pReset" style="min-height:40px;padding:8px;font-size:14px">إعادة الضبط</button>
+            <div class="alert alert-ok" id="pOk" style="margin-top:0"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="cardBox" style="margin-top:6px;box-shadow:none" hidden>
+        <h3>بطاقة العضوية</h3>
+        <div id="cardHost"></div>
+        <div class="actions no-print"><span class="spacer"></span>
+          <button class="btn btn-primary" id="btnPrintCard">طباعة البطاقة</button></div>
+      </div>
+
+      <div class="card" style="margin-top:6px;box-shadow:none">
+        <h3>إجراء اللجنة</h3>
+        <div class="grid">
+          <div class="field"><label>الحالة</label><select id="mStatus"></select></div>
+          <div class="field" id="mDateField" hidden><label>تاريخ العضوية</label><input type="date" id="mDate"></div>
+          <div class="field"><label>صفة العضوية (تظهر في البطاقة)</label><select id="mCap"></select></div>
+          <div class="field full"><label>ملاحظات الإدارة (تظهر في الإشعار)</label>
+            <input type="text" id="mNote" placeholder="سبب الرفض أو ما ينقص الطلب"></div>
+          <label class="check full" style="margin-top:0"><input type="checkbox" id="mMail" checked>
+            <span>إرسال الإشعار البريدي (إن كان بريد المتقدّم مفعّلاً)</span></label>
+        </div>
+
+        <div class="wa-box">
+          <div>
+            <b>إشعار صاحب الطلب عبر واتساب</b>
+            <p style="margin:2px 0 0;font-size:13px;color:var(--muted)">
+              يفتح محادثة مع <span id="waPhone" dir="ltr">—</span> برسالة رسمية جاهزة حسب الحالة المختارة.</p>
+          </div>
+          <a id="waBtn" class="btn btn-wa" href="#" target="_blank" rel="noopener">إرسال واتساب</a>
+        </div>
+        <details class="wa-prev"><summary>معاينة نص الرسالة</summary><pre id="waText"></pre></details>
+
+        <div class="alert alert-ok" id="mOk"></div>
+        <div class="actions">
+          <button class="btn btn-ghost" id="mPrint">طباعة الطلب</button>
+          <button class="btn btn-ghost" id="mResend">إعادة إرسال إشعار البريد</button>
+          <span class="spacer"></span>
+          <button class="btn btn-primary" id="mSave">حفظ الإجراء</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="ov"><div class="spin"><i></i><span>جارٍ التنفيذ…</span></div></div>
+
+<div class="dev no-print">
+  <span>Developed by: <b>Sahm Al-Hilalat</b> / 001-555</span>
+</div>
+
+<div id="printArea"></div>
+
+<script>
+var L = {"about":[{"id":"about","icon":"flag","title":"عن الحزب","kind":"text","text":"الحزب المدني الديمقراطي الأردني."},{"id":"vision","icon":"eye","title":"رؤية الحزب","kind":"text","text":"بناء دولة مدنية ديمقراطية تعتمد على قيم المواطنة، وتتسم بالتعددية وحماية حقوق الإنسان، يكون المواطن فيها محور اهتمام صنع القرار، وقائمة على المعرفة وسيادة القانون، بهدف تحقيق التنمية المستدامة والعدالة الاجتماعية."},{"id":"mission","icon":"message","title":"رسالة الحزب","kind":"text","text":"تحقيق المساواة وسيادة القانون، وتعزيز الحريات الفردية وحقوق الإنسان، والالتزام الكامل بقيم المواطنة، والنهوض باقتصاد وطني يوازن بين التنمية الاقتصادية والعدالة الاجتماعية، وتحقيق تطلعات المواطنين في مجتمع عادل ومزدهر."},{"id":"info","icon":"info","title":"معلومات الحزب","kind":"pairs","pairs":[["تاريخ عقد المؤتمر التأسيسي","16-12-2023"],["الرقم الوطني للحزب","693000029"],["الموقع الإلكتروني","www.jocdp.com"],["البريد الإلكتروني","email@site.com"],["مقر الحزب الرئيسي","عمان — الصويفية — شارع باريس — مجمع أنوار باريس (2) — العمارة (19) — الطابق الثاني — مكتب (214)"],["رقم هاتف الأمين العام","0795625044"],["أرقام للتواصل","062227338 , 0795625044"]]},{"id":"goals","icon":"target","title":"أهداف الحزب","kind":"list","items":["الوصول إلى رؤية برامجية قطاعية مستندة إلى المعرفة وقيم المواطنة وسيادة القانون ودون تمييز، في دولة مدنية ديمقراطية تعددية تحمي استقلالها بالتمكين السياسي والاقتصادي والمؤسسي، تحقق تطلعات الشعب في مجتمع العدالة والرفاه، الإنسان فيها هو المحدد الأساس في بناء السياسات والتشريعات.","ضمان المساواة في المواطنة وسيادة القانون وصون الحريات لتحقيق العدالة.","النهوض بالاقتصاد لحل مشاكل الفقر والبطالة وعجز المديونية وتحقيق العدالة الاجتماعية."]},{"id":"principles","icon":"book","title":"مبادئ الحزب","kind":"sections","sections":[{"h":"أولاً — الدولة ونظام الحكم","items":["المملكة الأردنية الهاشمية دولة ديمقراطية نظام الحكم فيها نيابي ملكي وراثي قائم على الفصل بين السلطات الثلاث وتوازنها واستقلالها وفق أحكام الدستور.","مجلس نواب منتخب على أسس ديمقراطية، وتداول سلمي للسلطة التنفيذية على أساس حكومات حزبية، وتعديل التشريعات والسياسات بالطرق السلمية، والممارسة الديموقراطية وعبر القنوات التشريعية، تقوده أحزاب برامجية مؤسسية وقوى ناشطة نوعية تواكب التطور المعرفي والتقني والمجتمعي.","قضاء مستقل إدارياً ومالياً، يطبق التشريعات النافذة على أساس المواطنة كقيمة عليا، تحكمه قيم العدالة والنزاهة والحيادية والمساواة، ضامن لحقوق الأفراد والهيئات، والعمل على تطوير قضاء دستوري مستقل يكفل للجميع الوصول المباشر إليه للطعن في مشروعية التشريعات التي لا تناسب المجتمع."]},{"h":"ثانياً — الفضاء العام والحريات","items":["أردن غني بتنوعه وتعدديته، ومجتمع يحترم الأديان والاختلاف في الرأي والتركيب الاجتماعي، ويرفض استغلال هذه الثوابت أو توظيفها في الشأن السياسي العام.","الشفافية وتكافؤ الفرص، فالمواطنون أمام القانون وفيه سواء، لا تمييز بينهم في الحقوق والواجبات بغض النظر عن الأصل أو الجنس أو العرق أو اللغة أو الدين أو المعتقد.","الحقوق والحريات العامة والفردية مصونة، لا مساس بها، مضموناً وجوهراً ولا بشروط ممارستها ولا بالضوابط التي تحكم ذلك، وفي طليعة هذا حرية الرأي وحرية الاجتماع وحرية التنظيم وحرية مخاطبة السلطات وحرية الحصول على المعلومة، ولا وصاية أخلاقية ولا قيمية لأي طرف أو جهة على المجتمع إلا في إطار الدستور والقوانين النافذة."]},{"h":"ثالثاً — المجتمع","items":["ثقافة وتعليم مستندان إلى قيم الحرية والانفتاح، ويحفزان الإبداع والتفكير الناقد واحترام الرأي الآخر، وإعلام مستقل يمارس دوره الرقابي بمهنية عالية ومسؤولية وطنية في مناخ من التعددية والحوار الموضوعي.","مجتمع قادر على تمكين كافة فئاته، يطلق إبداعاتها وطاقاتها وإمكاناتها، ويشجع على المشاركة، ولا صلاحية بحل منظماته وهيئاته أو الرقابة عليها إلا للقضاء.","تضامن مجتمعي يحترم حقوق كافة الفئات في ممارسة مواطنتها، وبخاصة تلك الأحقُّ بالرعاية، من أطفال ونساء وكبار سن وذوي إعاقة، لتمكين هذه الفئات من مواكبة التطور التقني والتحول الرقمي للتعامل مع المستجدات الحديثة."]},{"h":"رابعاً — الاقتصاد","items":["تحقيق الاستدامة في النمو الاقتصادي ورفع كفاءة عناصر الإنتاج وفي مقدمتها العمالة، وتحفيز رأس المال، وتنظيم الاقتصاد غير الرسمي حمايةً للعاملين فيه وتحقيقاً للعدالة الضريبية ودعم القطاعات الاقتصادية التشغيلية ذات القيمة المضافة، وتوظيف تنموي للموارد والثروات، من مياه وطاقة ومعادن، والمحافظة عليها للأجيال القادمة، وذلك بحمايتها من أخطار التغيرات المناخية، وتكون التكنولوجيا فيه أساساً وقاعدةً للعمل المنتج.","اقتصاد وطني حديث معرفي متطور يتبنى مفاهيم السوق الاجتماعي، يكون محوره رفاه الإنسان، ويعمل على توزيع مكتسبات التنمية بعدالة، ويتبنى الريادة والابتكار، ويعمل على تحقيق الأمن الغذائي.","قطاع عام منتج تحكمه قواعد الشفافية والنزاهة، قائم على حق المواطن بالخدمة، تقوم الدولة من خلاله بأدوارها التنظيمية والرقابية، وفي حدود القانون، وتنهض بمسؤولياتها لتوفير الخدمات الأساسية لمواطنيها بالتساوي.","توجيه الإنفاق العام نحو تعليم أساسي ومهني نقدي إبداعي مجاني أكثر جودة، وتأمين صحي شامل يبدأ من المراكز الصحية الأولية بالشراكة مع القطاع الخاص، ونظام نقل كفؤ وآمن ومتاح، ومنظومة حماية اجتماعية تعمل على تأمين السكن للشباب وذوي الدخل المحدود، وسوق عمل منظم قائم على التوازن بين أطرافه، وشراكة فعلية مع قطاع خاص يحترم قواعد المنافسة العادلة."]},{"h":"خامساً — القضية الفلسطينية","items":["القضية الفلسطينية قضية وطنية وعربية وإنسانية عادلة وجوهرية للأردن، والحزب المدني الديمقراطي يرفض أي مساس بهذه الثوابت وبحقوق الشعب الفلسطيني التي في مقدمتها حقه في تقرير مصيره وإقامة دولته المستقلة على ترابه الوطني."]},{"h":"سادساً — الشأن العربي","items":["الأردن جزء لا يتجزأ من محيطه الإقليمي وامتداده العربي، وسيعمل الحزب المدني الديمقراطي مع قوى هذا الامتداد ويتضامن معها، وبخاصة منها تلك التي تتقاطع مبادئها مع مبادئه في سبيل القضايا المعادلة لهذا الامتداد."]},{"h":"سابعاً — الشأن الدولي","items":["الديموقراطية والحرية والعدالة حق خالص للشعوب والأفراد على حد سواء، والحزب المدني الديمقراطي يرفض الخلط بين مقاومة الاحتلال وبين أشكال العنف والإرهاب، ويعتبر حماية البيئة مسؤولية إنسانية، ويؤمن بأن الانفتاح على الآخر وتبادل الخبرات والمعارف وسائل مشروعة للشعوب لمواجهة التحديات ومتطلبات الحياة العامة."]}]},{"id":"leaders","icon":"users","title":"القيادات التنفيذية","kind":"people","people":[["حماده حسني احمد ابو نجمه","الأمين العام"],["حسام الدين حسني عايش عايش","نائب الأمين العام للشؤون السياسية"],["وسام محمد عبد السلام العمري","نائب الأمين العام للشؤون البرامجية والقطاعية"],["نانسي فرح فرحان شحاتيت","أمين السر"],["جمال محمد فريز فريز","مساعد الأمين العام للشؤون المالية"],["نهى حنا سليم محريز","مساعد الأمين العام لشؤون المرأة"],["سوسن صبحى عبد المطر","مساعد الأمين العام لشؤون الشباب"],["ابتسام حسن خالد المناصير","مساعد الأمين العام لشؤون منظمات المجتمع المدني"],["ماجد ضيف الله فهد اللوانسه","مساعد الأمين العام لشؤون الفروع"],["بهيسه زيد علي المعادات","مساعد الأمين العام لشؤون اللجنة الاجتماعية"],["على محمود مسعود العوامله","مساعد الأمين العام لشؤون الدعم الفني والتنظيمي"],["شرف نياز دليوان المجالي","مساعد الأمين العام لشؤون العمل النقابي والعمالي"],["جمال ابراهيم عمر الصلاح","مساعد الأمين العام لشؤون التدريب والمدرسة الحزبية"],["عدنان وجيه ابراهيم العابودى","مساعد الأمين العام لشؤون الثقافة الحزبية"],["رنا جمال احمد ابو حمور","مساعد الأمين العام لشؤون التواصل الاجتماعي"],["محمد محمود حسين الشرمان","مساعد الأمين العام لشؤون العضوية"],["موسى احمد مخاط بني خالد","عضو مكتب تنفيذي"],["عدنان خلف حامد السواعير","عضو مكتب تنفيذي"],["يزن احمد ربحي اليعقوب","عضو مكتب تنفيذي"]]}],"conditions":["أن يكون قد أتم 18 عاماً من عمره.","غير محكوم بجناية أو جنحة مخلة بالشرف.","الإيمان بمبادئ الحزب والعمل على تنفيذ أهدافه.","أن يرفق صورة عن هوية الأحوال المدنية سارية المفعول (للوجهين).","أن يرفق شهادة عدم محكومية صادرة خلال آخر شهر."],"governorates":{"العاصمة":["لواء قصبة عمان","لواء ماركا","لواء القويسمة","لواء الجامعة","لواء وادي السير","لواء سحاب","لواء الجيزة","لواء الموقر","لواء ناعور"],"إربد":["لواء قصبة إربد","لواء الرمثا","لواء الكورة","لواء بني كنانة","لواء الأغوار الشمالية","لواء بني عبيد","لواء المزار الشمالي","لواء الطيبة","لواء الوسطية"],"الزرقاء":["لواء قصبة الزرقاء","لواء الرصيفة","لواء الهاشمية"],"البلقاء":["لواء قصبة السلط","لواء ماحص والفحيص","لواء دير علا","لواء عين الباشا","لواء الشونة الجنوبية"],"المفرق":["لواء قصبة المفرق","لواء البادية الشمالية","لواء البادية الشمالية الغربية","لواء الرويشد"],"الكرك":["لواء قصبة الكرك","لواء المزار الجنوبي","لواء القصر","لواء الأغوار الجنوبية","لواء عي","لواء فقوع","لواء القطرانة"],"مادبا":["لواء قصبة مادبا","لواء ذيبان"],"جرش":["لواء قصبة جرش"],"عجلون":["لواء قصبة عجلون","لواء كفرنجة"],"معان":["لواء قصبة معان","لواء البتراء","لواء الشوبك","لواء الحسينية"],"الطفيلة":["لواء قصبة الطفيلة","لواء بصيرا","لواء الحسا"],"العقبة":["لواء قصبة العقبة","لواء القويرة"]},"districtsByGov":{"العاصمة":["الدائرة الأولى — عمان","الدائرة الثانية — عمان","الدائرة الثالثة — عمان","دائرة البادية الوسطى"],"إربد":["الدائرة الأولى — إربد","الدائرة الثانية — إربد","دائرة البادية الشمالية"],"الزرقاء":["دائرة الزرقاء","دائرة البادية الوسطى"],"البلقاء":["دائرة البلقاء"],"المفرق":["دائرة المفرق","دائرة البادية الشمالية"],"الكرك":["دائرة الكرك","دائرة البادية الجنوبية"],"مادبا":["دائرة مادبا"],"جرش":["دائرة جرش"],"عجلون":["دائرة عجلون"],"معان":["دائرة معان","دائرة البادية الجنوبية"],"الطفيلة":["دائرة الطفيلة"],"العقبة":["دائرة العقبة"]},"districtByLiwa":{"لواء القويسمة":"الدائرة الأولى — عمان","لواء سحاب":"الدائرة الأولى — عمان","لواء الجيزة":"الدائرة الأولى — عمان","لواء الموقر":"الدائرة الأولى — عمان","لواء قصبة عمان":"الدائرة الثانية — عمان","لواء ماركا":"الدائرة الثانية — عمان","لواء الجامعة":"الدائرة الثالثة — عمان","لواء وادي السير":"الدائرة الثالثة — عمان","لواء ناعور":"الدائرة الثالثة — عمان","لواء قصبة إربد":"الدائرة الأولى — إربد","لواء الوسطية":"الدائرة الأولى — إربد","لواء بني كنانة":"الدائرة الأولى — إربد","لواء الرمثا":"الدائرة الأولى — إربد","لواء بني عبيد":"الدائرة الثانية — إربد","لواء المزار الشمالي":"الدائرة الثانية — إربد","لواء الطيبة":"الدائرة الثانية — إربد","لواء الأغوار الشمالية":"الدائرة الثانية — إربد","لواء الكورة":"الدائرة الثانية — إربد","لواء قصبة الزرقاء":"دائرة الزرقاء","لواء الرصيفة":"دائرة الزرقاء","لواء الهاشمية":"دائرة الزرقاء","لواء قصبة السلط":"دائرة البلقاء","لواء ماحص والفحيص":"دائرة البلقاء","لواء دير علا":"دائرة البلقاء","لواء عين الباشا":"دائرة البلقاء","لواء الشونة الجنوبية":"دائرة البلقاء","لواء قصبة المفرق":"دائرة المفرق","لواء البادية الشمالية":"دائرة البادية الشمالية","لواء البادية الشمالية الغربية":"دائرة البادية الشمالية","لواء الرويشد":"دائرة البادية الشمالية","لواء قصبة الكرك":"دائرة الكرك","لواء المزار الجنوبي":"دائرة الكرك","لواء القصر":"دائرة الكرك","لواء الأغوار الجنوبية":"دائرة الكرك","لواء عي":"دائرة الكرك","لواء فقوع":"دائرة الكرك","لواء القطرانة":"دائرة الكرك","لواء قصبة مادبا":"دائرة مادبا","لواء ذيبان":"دائرة مادبا","لواء قصبة جرش":"دائرة جرش","لواء قصبة عجلون":"دائرة عجلون","لواء كفرنجة":"دائرة عجلون","لواء قصبة معان":"دائرة معان","لواء البتراء":"دائرة معان","لواء الشوبك":"دائرة معان","لواء الحسينية":"دائرة معان","لواء قصبة الطفيلة":"دائرة الطفيلة","لواء بصيرا":"دائرة الطفيلة","لواء الحسا":"دائرة الطفيلة","لواء قصبة العقبة":"دائرة العقبة","لواء القويرة":"دائرة العقبة"},"committees":[{"name":"اللجنة الاقتصادية","desc":"الاقتصاد، الاستثمار، الزراعة، السياحة، الطاقة، الاتصالات وتكنولوجيا المعلومات"},{"name":"اللجنة السياسية والتشريعية","desc":"الشؤون البرلمانية، العدل وحقوق الإنسان، السياسة الخارجية"},{"name":"لجنة التنمية البشرية","desc":"العمل، التعليم، الصحة، التنمية الاجتماعية، الثقافة والفنون، الرياضة، النقابات ومنظمات المجتمع المدني"},{"name":"لجنة البنية التحتية","desc":"الأشغال العامة والإسكان، النقل، المياه، الإدارة المحلية، البيئة"}],"committeesRequired":2,"genders":["ذكر","أنثى"],"marital":["أعزب / عزباء","متزوج / متزوجة","مطلق / مطلقة","أرمل / أرملة"],"education":["أقل من الثانوية العامة","الثانوية العامة","دبلوم متوسط","بكالوريوس","دبلوم عالٍ","ماجستير","دكتوراه"],"professions":["معلم / معلمة","أستاذ جامعي","طبيب / طبيبة","طبيب أسنان","صيدلاني / صيدلانية","ممرض / ممرضة","مهندس / مهندسة","محامٍ / محامية","محاسب / محاسبة","موظف قطاع عام","موظف قطاع خاص","عسكري متقاعد","مزارع","تاجر","صاحب عمل خاص","حرفي / مهني","سائق","صحفي / إعلامي","مبرمج / تقني معلومات","عامل","طالب / طالبة","ربة منزل","متقاعد / متقاعدة","باحث عن عمل","أخرى"],"statuses":["تم الاستلام","قيد المراجعة","بانتظار استكمال","مقبول — بانتظار رد الهيئة المستقلة","عضو عامل","مرفوض"],"capacities":["منتسب","منتسب مؤسس"],"trackSteps":["تم الاستلام","قيد المراجعة","مقبول — بانتظار رد الهيئة المستقلة","عضو عامل"],"ageGroups":["شباب (35 سنة فأقل)","فوق 35 سنة"],"youthMax":35,"whyMin":30,"wa":{"تم الاستلام":"*{party}*\n━━━━━━━━━━━━━━━\nالأخ/الأخت {name} المحترم/ة\n\nتحية طيبة وبعد\nنشكر لكم ثقتكم واختياركم الانتساب إلى الحزب، ونعلمكم بأنه تم استلام طلبكم بتاريخ {date}\n\n▪️ الرقم المرجعي\n{ref}\n▪️ اللجان المختارة\n{committees}\n\n🔎 لمتابعة حالة طلبكم في أي وقت\n{statusUrl}\n\nوسنوافيكم بكل مرحلة من مراحل دراسة الطلب\n\nمع خالص التقدير\n{officer}\n{party}\n{phones}","قيد المراجعة":"*{party}*\n━━━━━━━━━━━━━━━\nالأخ/الأخت {name} المحترم/ة\n\nتحية طيبة وبعد\nنعلمكم بأن طلب انتسابكم أصبح قيد المراجعة لدى لجنة العضوية اعتباراً من {date}\n\n▪️ الرقم المرجعي\n{ref}\n{note}\n🔎 متابعة حالة الطلب\n{statusUrl}\n\nنقدّر لكم صبركم، وسنوافيكم بالنتيجة فور صدورها\n\nمع خالص التقدير\n{officer}\n{party}\n{phones}","بانتظار استكمال":"*{party}*\n━━━━━━━━━━━━━━━\nالأخ/الأخت {name} المحترم/ة\n\nتحية طيبة وبعد\nعند مراجعة طلبكم تبيّن وجود ما يلزم استكماله\n\n▪️ الرقم المرجعي\n{ref}\n{note}\nيرجى التكرم بالتواصل معنا لاستكمال المطلوب\n\n🔎 متابعة حالة الطلب\n{statusUrl}\n\nمع التقدير\n{officer}\n{party}\n{phones}","مقبول — بانتظار رد الهيئة المستقلة":"*{party}*\n━━━━━━━━━━━━━━━\nالأخ/الأخت {name} المحترم/ة\n\nتحية طيبة وبعد\nيسرّنا إعلامكم بأنه تم قبول طلب انتسابكم بتاريخ {date}، وقد أُحيل الطلب إلى الهيئة المستقلة للانتخاب لاستكمال الإجراءات القانونية\n\n▪️ الرقم المرجعي\n{ref}\n{note}\n🔎 متابعة حالة الطلب\n{statusUrl}\n\nوسيتم إعلامكم فور ورود ردها، أهلاً وسهلاً بكم\n\nمع خالص التقدير\n{officer}\n{party}\n{phones}","عضو عامل":"*{party}*\n━━━━━━━━━━━━━━━\n🎉 مبارك انضمامكم\n\nالأخ/الأخت {name} المحترم/ة\n\nتحية طيبة وبعد\nيطيب لنا تهنئتكم باكتمال إجراءات انتسابكم، وأنكم أصبحتم عضواً عاملاً في الحزب اعتباراً من تاريخ {memberDate}\n\n▪️ رقم العضوية\n{memberNo}\n▪️ اللجان\n{committees}\n{note}\n🔎 لعرض بطاقة عضويتكم وطباعتها\n{statusUrl}\n\nنرحّب بكم بين صفوفنا، ونتطلع إلى إسهامكم في برامج الحزب وأنشطته\n\nمع أطيب التمنيات بالتوفيق\n{officer}\n{party}\n{phones}","مرفوض":"*{party}*\n━━━━━━━━━━━━━━━\nالأخ/الأخت {name} المحترم/ة\n\nتحية طيبة وبعد\nنشكر لكم اهتمامكم بالانتساب إلى الحزب، ونأسف لإعلامكم بتعذّر الموافقة على طلبكم في الوقت الحالي\n\n▪️ الرقم المرجعي\n{ref}\n{note}\nويسعدنا تواصلكم معنا لأي استفسار\n\nمع وافر الاحترام\n{officer}\n{party}\n{phones}"},"today":"2026-09-20"};
+var CFG = window.__CFG || {};
+L.today = (function(){ var d=new Date(), p=function(n){return ('0'+n).slice(-2)};
+  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); })();
+var CRED = null, ROWS = [], CUR = null;
+var LOGO_FULL = 'logo.png';
+var LOGO_MARK = 'bird.png';
+var $ = function(id){ return document.getElementById(id); };
+var ov = function(on){ $('ov').classList.toggle('show', !!on); };
+var ST = { NEW:L.statuses[0], REV:L.statuses[1], WAIT:L.statuses[2], APP:L.statuses[3], MEM:L.statuses[4], NO:L.statuses[5] };
+var COM_NAMES = L.committees.map(function(c){ return c.name; });
+
+document.title = 'لوحة إدارة العضوية — ' + CFG.party;
+function setHeadTitle(){
+  $('hTitle').textContent = (window.innerWidth < 700) ? 'لوحة إدارة العضوية' : ('لوحة إدارة العضوية — ' + CFG.party);
+}
+setHeadTitle();
+window.addEventListener('resize', setHeadTitle);
+if(!CFG.requirePass) $('passField').hidden = true;
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];}); }
+function fill(el, arr, all){
+  el.innerHTML=''; var o=document.createElement('option'); o.value=''; o.textContent=all; el.appendChild(o);
+  arr.forEach(function(v){ var x=document.createElement('option'); x.value=v; x.textContent=v; el.appendChild(x); });
+}
+var ALL_DIST=[]; Object.keys(L.districtsByGov).forEach(function(g){ L.districtsByGov[g].forEach(function(d){ if(ALL_DIST.indexOf(d)===-1) ALL_DIST.push(d); }); });
+fill($('fStatus'), L.statuses, 'كل الحالات');
+fill($('fGender'), L.genders, 'الجنسان');
+fill($('fAge'), L.ageGroups, 'كل الأعمار');
+fill($('fGov'), Object.keys(L.governorates), 'كل المحافظات');
+fill($('fDist'), ALL_DIST, 'كل الدوائر');
+fill($('fCom'), COM_NAMES, 'كل اللجان');
+fill($('fEdu'), L.education, 'كل المؤهلات');
+fill($('mStatus'), L.statuses, '— اختر —');
+(function(){ var caps = L.capacities || ['منتسب','منتسب مؤسس'];
+  $('mCap').innerHTML = caps.map(function(v){ return '<option value="'+esc(v)+'">'+esc(v)+'</option>'; }).join('');
+})();
+
+/* ---------- الدخول ---------- */
+$('nid').addEventListener('input', function(){ this.value=this.value.replace(/\D/g,'').slice(0,10); });
+$('btnLogin').addEventListener('click', doLogin);
+['nid','pass'].forEach(function(id){ $(id).addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); }); });
+function doLogin(){
+  var c = { nid: $('nid').value, pass: $('pass').value };
+  if(c.nid.length!==10){ showLoginErr('أدخل الرقم الوطني كاملاً (10 أرقام).'); return; }
+  ov(true);
+  google.script.run.withSuccessHandler(function(res){
+    ov(false);
+    if(res && res.ok){
+      CRED=c; if(window.__afterLogin) window.__afterLogin(c);
+      try{ sessionStorage.setItem('jcdp_cred', JSON.stringify(c)); }catch(e){}
+      $('loginBox').hidden=true; $('panel').hidden=false; $('btnOut').hidden=false;
+      $('who').textContent = res.name || '';
+      load();
+    } else showLoginErr((res && res.message) || 'تعذّر الدخول.');
+  }).withFailureHandler(function(e){ ov(false); showLoginErr(e.message); }).adminLogin(c);
+}
+function showLoginErr(m){ var a=$('loginErr'); a.textContent=m; a.classList.add('show'); }
+$('btnOut').addEventListener('click', function(){
+  try{ sessionStorage.removeItem('jcdp_cred'); }catch(e){}
+  location.reload();
+});
+try{ var saved=sessionStorage.getItem('jcdp_cred');
+  if(saved){ var c=JSON.parse(saved); $('nid').value=c.nid||''; $('pass').value=c.pass||''; doLogin(); }
+}catch(e){}
+
+/* ---------- التبويبات ---------- */
+document.querySelectorAll('.tab[data-v]').forEach(function(t){
+  t.addEventListener('click', function(){
+    document.querySelectorAll('.tab[data-v]').forEach(function(x){ x.classList.remove('on'); });
+    t.classList.add('on');
+    $('vApps').hidden=(t.dataset.v!=='apps');
+    $('vRep').hidden=(t.dataset.v!=='rep');
+    $('vSet').hidden=(t.dataset.v!=='set');
+    if(t.dataset.v==='rep') reports();
+    if(t.dataset.v==='set') loadSettings();
+  });
+});
+
+/* ---------- تحميل ---------- */
+function load(){
+  ov(true);
+  google.script.run.withSuccessHandler(function(res){
+    ov(false);
+    if(!res || !res.ok){ alert((res&&res.message)||'تعذّر التحميل'); return; }
+    ROWS=res.rows; render(); if(!$('vRep').hidden) reports();
+  }).withFailureHandler(function(e){ ov(false); alert('خطأ: '+e.message); }).adminFetch(CRED);
+}
+$('btnRefresh').addEventListener('click', load);
+['q','fStatus','fGender','fAge','fGov','fDist','fCom','fEdu'].forEach(function(id){
+  $(id).addEventListener('input', function(){ render(); if(!$('vRep').hidden) reports(); });
+});
+$('btnClear').addEventListener('click', function(){
+  ['q','fStatus','fGender','fAge','fGov','fDist','fCom','fEdu'].forEach(function(id){ $(id).value=''; });
+  render(); if(!$('vRep').hidden) reports();
+});
+
+function coms(r){ return [r['اللجنة الأولى'], r['اللجنة الثانية']].filter(function(x){ return x; }); }
+function filtered(){
+  var q=$('q').value.trim();
+  var m={'الحالة':$('fStatus').value,'الجنس':$('fGender').value,'الفئة العمرية':$('fAge').value,
+         'المحافظة':$('fGov').value,'الدائرة الانتخابية':$('fDist').value,'المؤهل العلمي':$('fEdu').value};
+  var fc=$('fCom').value;
+  return ROWS.filter(function(r){
+    for(var k in m){ if(m[k] && r[k]!==m[k]) return false; }
+    if(fc && coms(r).indexOf(fc)===-1) return false;
+    if(q){
+      var hay=[r['رقم الطلب'],r['الاسم الرباعي'],r['الرقم الوطني'],r['رقم الهاتف'],r['المهنة'],r['الإقامة (المنطقة)'],r['رقم العضوية']].join(' ');
+      if(hay.indexOf(q)===-1) return false;
+    }
+    return true;
+  });
+}
+function pill(s){
+  var c = s===ST.MEM?'p-mem': s===ST.APP?'p-ok': s===ST.NO?'p-no': s===ST.WAIT?'p-wait': s===ST.REV?'p-rev':'p-new';
+  return '<span class="pill '+c+'">'+(s||ST.NEW)+'</span>';
+}
+function cnt(list,s){ return list.filter(function(r){ return r['الحالة']===s; }).length; }
+function waPhone(p){
+  var d=String(p||'').replace(/\D/g,'');
+  if(d.indexOf('962')===0) return d;
+  if(d.indexOf('0')===0) return '962'+d.substring(1);
+  if(d.indexOf('7')===0) return '962'+d;
+  return d;
+}
+
+function render(){
+  var list=filtered(), tb=$('tbody');
+  tb.innerHTML = list.map(function(r){
+    return '<tr data-i="'+ROWS.indexOf(r)+'">'+
+      '<td>'+esc(r['رقم الطلب'])+'</td><td>'+esc(r['تاريخ التقديم'])+'</td>'+
+      '<td><b>'+esc(r['الاسم الرباعي'])+'</b></td><td>'+esc(r['الرقم الوطني'])+'</td><td>'+esc(r['رقم الهاتف'])+'</td>'+
+      '<td>'+esc(r['العمر'])+'</td><td>'+esc(r['الفئة العمرية'])+'</td><td>'+esc(r['الجنس'])+'</td>'+
+      '<td>'+esc(r['المحافظة'])+'</td><td>'+esc(r['الدائرة الانتخابية'])+'</td>'+
+      '<td>'+esc(coms(r).join(' / '))+'</td><td>'+pill(r['الحالة'])+'</td>'+
+      '<td>'+(waPhone(r['رقم الهاتف']) ? '<a class="wa-cell" target="_blank" rel="noopener" href="https://wa.me/'+waPhone(r['رقم الهاتف'])+'" onclick="event.stopPropagation()">محادثة</a>' : '—')+'</td></tr>';
+  }).join('');
+  if(!list.length) tb.innerHTML='<tr><td colspan="13" style="text-align:center;color:var(--muted);padding:26px">لا توجد طلبات مطابقة</td></tr>';
+  tb.querySelectorAll('tr[data-i]').forEach(function(tr){
+    tr.addEventListener('click', function(){ openRow(ROWS[+tr.dataset.i]); });
+  });
+  $('count').textContent='المعروض: '+list.length+' من أصل '+ROWS.length;
+  $('sTotal').textContent=ROWS.length;
+  $('sNew').textContent=cnt(ROWS,ST.NEW); $('sRev').textContent=cnt(ROWS,ST.REV);
+  $('sWait').textContent=cnt(ROWS,ST.WAIT); $('sApp').textContent=cnt(ROWS,ST.APP);
+  $('sMem').textContent=cnt(ROWS,ST.MEM);
+}
+
+/* ---------- التقارير ---------- */
+function group(list, key){
+  var m={}; list.forEach(function(r){ var v=r[key]||'غير محدد'; m[v]=(m[v]||0)+1; });
+  return Object.keys(m).map(function(k){ return {k:k,n:m[k]}; }).sort(function(a,b){ return b.n-a.n; });
+}
+function groupComs(list){
+  var m={}; COM_NAMES.forEach(function(c){ m[c]=0; });
+  list.forEach(function(r){ coms(r).forEach(function(c){ m[c]=(m[c]||0)+1; }); });
+  return Object.keys(m).map(function(k){ return {k:k,n:m[k]}; }).sort(function(a,b){ return b.n-a.n; });
+}
+function block(title, rows, total){
+  var max = rows.length ? rows[0].n : 1;
+  return '<div class="card"><h3>'+title+'</h3>' + (rows.length ? rows.map(function(x){
+    var pct = total ? Math.round(x.n/total*100) : 0;
+    return '<div class="rowbar"><span>'+esc(x.k)+'</span><b>'+x.n+'</b>'+
+           '<span class="t"><i style="width:'+Math.max(4, Math.round(x.n/(max||1)*100))+'%"></i></span><em>'+pct+'%</em></div>';
+  }).join('') : '<p class="sub">لا توجد بيانات.</p>') + '</div>';
+}
+function reports(){
+  var list=filtered(), t=list.length;
+  $('rTotal').textContent=t;
+  $('rMale').textContent=list.filter(function(r){return r['الجنس']===L.genders[0];}).length;
+  $('rFemale').textContent=list.filter(function(r){return r['الجنس']===L.genders[1];}).length;
+  $('rYouth').textContent=list.filter(function(r){return r['الفئة العمرية']===L.ageGroups[0];}).length;
+  $('rOld').textContent=list.filter(function(r){return r['الفئة العمرية']===L.ageGroups[1];}).length;
+  $('rMem2').textContent=cnt(list,ST.MEM);
+  $('repBox').innerHTML =
+    block('التوزيع حسب الجنس', group(list,'الجنس'), t) +
+    block('التوزيع حسب الفئة العمرية', group(list,'الفئة العمرية'), t) +
+    block('حالات الطلبات', group(list,'الحالة'), t) +
+    block('الانتماء إلى اللجان', groupComs(list), t) +
+    block('التوزيع حسب المحافظة', group(list,'المحافظة'), t) +
+    block('التوزيع حسب الدائرة الانتخابية', group(list,'الدائرة الانتخابية'), t) +
+    block('التوزيع حسب المؤهل العلمي', group(list,'المؤهل العلمي'), t) +
+    block('التوزيع حسب المهنة', group(list,'المهنة'), t);
+}
+
+/* ---------- تفاصيل الطلب ---------- */
+var SHOW = ['الاسم الرباعي','الرقم الوطني','تاريخ الولادة','العمر','الفئة العمرية','الجنس','الحالة الاجتماعية',
+'رقم الهاتف','البريد الإلكتروني','المهنة','مكان العمل','المؤهل العلمي','التخصص الجامعي','غير ذلك',
+'المحافظة','اللواء','الإقامة (المنطقة)','الدائرة الانتخابية','العنوان حسب بطاقة الأحوال',
+'اللجنة الأولى','اللجنة الثانية','شخص يعرفه في الحزب','هاتف الشخص المعروف',
+'تاريخ شهادة عدم المحكومية','تاريخ التقديم','الحالة','تاريخ العضوية','رقم العضوية','ملاحظات الإدارة','آخر تحديث'];
+
+function openRow(r){
+  CUR=r;
+  $('mRef').textContent = r['رقم الطلب'] + ' — ' + r['الاسم الرباعي'];
+  $('mBody').innerHTML = SHOW.map(function(k){ return '<div><span class="k">'+k+'</span>'+esc(r[k]||'—')+'</div>'; }).join('') +
+    (r['لماذا اخترت الحزب'] ? '<div style="grid-column:1/-1"><span class="k">لماذا اخترت الحزب</span>'+esc(r['لماذا اخترت الحزب'])+'</div>' : '');
+  var lk=[['صورة الهوية (الوجه)','الهوية — الوجه'],['صورة الهوية (الظهر)','الهوية — الظهر'],['شهادة عدم المحكومية','شهادة عدم المحكومية']];
+  $('mLinks').innerHTML = lk.map(function(p){ return r[p[0]] ? '<a href="'+esc(r[p[0]])+'" target="_blank" rel="noopener">📎 '+p[1]+'</a>' : ''; }).join('');
+  $('mStatus').value = r['الحالة'] || ST.NEW;
+  $('mNote').value = r['ملاحظات الإدارة'] || '';
+  $('mDate').value = isoDate(r['تاريخ العضوية']) || L.today;
+  $('mCap').value = r['صفة العضوية'] || (L.capacities && L.capacities[0]) || 'منتسب';
+  $('mMail').checked = true;
+  toggleDate(); buildWa();
+  loadRowImages(r._row);
+  loadCard();
+  $('mOk').classList.remove('show');
+  $('modal').classList.add('show');
+}
+function toggleDate(){ $('mDateField').hidden = ($('mStatus').value !== ST.MEM); }
+$('mStatus').addEventListener('change', function(){ toggleDate(); buildWa(); });
+$('mNote').addEventListener('input', buildWa);
+$('mDate').addEventListener('change', buildWa);
+$('mClose').addEventListener('click', close);
+$('modal').addEventListener('click', function(e){ if(e.target===this) close(); });
+function close(){ $('modal').classList.remove('show'); }
+
+/* ---------- التواريخ ---------- */
+function todayAr(){
+  var d=new Date();
+  return ('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear();
+}
+function arDate(iso){
+  var m=String(iso||'').match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return m ? (m[3]+'/'+m[2]+'/'+m[1]) : String(iso||'');
+}
+function isoDate(v){
+  v=String(v||'').trim(); if(!v) return '';
+  if(/^\d{4}-\d{2}-\d{2}$/.test(v)) return v;
+  var m=v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if(m){ var a=+m[1], b=+m[2], d=a>12?a:b, mo=a>12?b:a;
+    return m[3]+'-'+('0'+mo).slice(-2)+'-'+('0'+d).slice(-2); }
+  return '';
+}
+
+/* ---------- رسالة الواتساب ---------- */
+function buildWa(){
+  var r=CUR; if(!r) return;
+  var st=$('mStatus').value || r['الحالة'];
+  var tpl=L.wa[st] || '';
+  var note=$('mNote').value.trim();
+  var map={
+    '{name}': r['الاسم الرباعي']||'', '{ref}': r['رقم الطلب']||'',
+    '{party}': CFG.party||'', '{officer}': CFG.officer||'',
+    '{phones}': CFG.phones?('📞 '+CFG.phones):'',
+    '{officer}': CFG.officer||'',
+    '{date}': todayAr(),
+    '{memberDate}': arDate($('mDate').value || r['تاريخ العضوية'] || L.today),
+    '{memberNo}': r['رقم العضوية'] || '(يُمنح عند الحفظ)',
+    '{committees}': coms(r).join(' / '),
+    '{note}': note ? ('📝 ملاحظة اللجنة\n'+note+'\n') : '',
+    '{statusUrl}': CFG.statusUrl || ''
+  };
+  var txt=tpl;
+  Object.keys(map).forEach(function(k){ txt = txt.split(k).join(map[k]); });
+  txt = txt.replace(/\n{3,}/g,'\n\n').trim();
+  var ph=waPhone(r['رقم الهاتف']);
+  $('waPhone').textContent = ph ? ('+'+ph) : 'لا يوجد رقم';
+  $('waText').textContent = txt;
+  var btn=$('waBtn');
+  if(ph){ btn.href='https://wa.me/'+ph+'?text='+encodeURIComponent(txt); btn.classList.remove('off'); }
+  else { btn.href='#'; btn.classList.add('off'); }
+}
+$('waBtn').addEventListener('click', function(){
+  if(!CUR || this.classList.contains('off')) return;
+  google.script.run.adminLogWhatsapp(CRED, CUR._row, $('mStatus').value);
+});
+
+/* ---------- الحفظ ---------- */
+$('mSave').addEventListener('click', function(){
+  if(!CUR) return;
+  if($('mStatus').value===ST.MEM && !CUR['الصورة الشخصية']){
+    if(!confirm('لا توجد صورة شخصية لهذا العضو — ستصدر البطاقة بدون صورة. هل تتابع؟')) return;
+  }
+  ov(true);
+  var opts={ status:$('mStatus').value, note:$('mNote').value, memberDate:$('mDate').value,
+             capacity:$('mCap').value, sendEmail:$('mMail').checked };
+  google.script.run.withSuccessHandler(function(res){
+    ov(false);
+    if(res && res.ok){
+      CUR['الحالة']=opts.status; CUR['ملاحظات الإدارة']=opts.note; CUR['صفة العضوية']=opts.capacity;
+      if(res.memberNo) CUR['رقم العضوية']=res.memberNo;
+      if(res.memberDate) CUR['تاريخ العضوية']=res.memberDate;
+      var a=$('mOk');
+      a.textContent='تم حفظ الإجراء.'+(res.emailSent?' وأُرسل الإشعار البريدي.':'')+' أرسل الإشعار لصاحب الطلب بالضغط على زر واتساب.';
+      a.classList.add('show');
+      buildWa(); render(); loadCard(); if(!$('vRep').hidden) reports();
+    } else alert((res&&res.message)||'تعذّر الحفظ');
+  }).withFailureHandler(function(e){ ov(false); alert('خطأ: '+e.message); })
+  .adminUpdate(CRED, CUR._row, opts);
+});
+$('mResend').addEventListener('click', function(){
+  if(!CUR) return; ov(true);
+  google.script.run.withSuccessHandler(function(res){
+    ov(false); var a=$('mOk'); a.textContent=(res&&res.message)||''; a.classList.add('show');
+  }).withFailureHandler(function(e){ ov(false); alert('خطأ: '+e.message); }).adminResend(CRED, CUR._row);
+});
+
+/* ---------- الطباعة ---------- */
+function printHead(title, note){
+  return '<div class="phead" style="text-align:center">' +
+         '<img src="logo.png" alt="شعار الحزب" style="height:80px;margin-bottom:6px">' +
+         '<h1>'+esc(CFG.party)+'</h1><p>'+esc(title)+' — تاريخ الطباعة: '+todayAr()+
+         (note?' — '+esc(note):'')+'</p></div>';
+}
+function printSign(){
+  return '<div class="psign"><div><b>'+esc(CFG.signature || 'مساعد الأمين العام لشؤون العضوية')+'</b></div>'+
+         (CFG.phones?'<div>هواتف التواصل: <span dir="ltr">'+esc(CFG.phones)+'</span></div>':'')+
+         '<div style="margin-top:22px">التوقيع: ................................</div></div>';
+}
+function doPrint(html){
+  $('printArea').innerHTML=html;
+  document.body.classList.add('printing');
+  window.print();
+  setTimeout(function(){ document.body.classList.remove('printing'); }, 500);
+}
+$('btnPrint').addEventListener('click', function(){
+  var list=filtered();
+  if(!list.length){ alert('لا توجد بيانات للطباعة.'); return; }
+  var cols=['رقم الطلب','الاسم الرباعي','الرقم الوطني','رقم الهاتف','العمر','الجنس','المحافظة','الدائرة الانتخابية','الحالة'];
+  var html = printHead('كشف طلبات الانتساب','عدد السجلات: '+list.length) +
+    '<table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr>' +
+    cols.map(function(c){ return '<th style="background:#cb8738;color:#fff;border:1px solid #999;padding:6px">'+c+'</th>'; }).join('') +
+    '<th style="background:#cb8738;color:#fff;border:1px solid #999;padding:6px">اللجان</th></tr></thead><tbody>' +
+    list.map(function(r){
+      return '<tr>'+cols.map(function(c){ return '<td style="border:1px solid #bbb;padding:5px">'+esc(r[c])+'</td>'; }).join('')+
+             '<td style="border:1px solid #bbb;padding:5px">'+esc(coms(r).join(' / '))+'</td></tr>';
+    }).join('') +
+    '</tbody></table>' + printSign();
+  doPrint(html);
+});
+$('btnPrintRep').addEventListener('click', function(){
+  var list=filtered(), t=list.length;
+  var html = printHead('تقرير إحصائي — طلبات الانتساب والعضوية','إجمالي السجلات: '+t);
+  var blocks=[['الجنس',group(list,'الجنس')],['الفئة العمرية',group(list,'الفئة العمرية')],
+              ['الحالة',group(list,'الحالة')],['اللجان',groupComs(list)],
+              ['المحافظة',group(list,'المحافظة')],['الدائرة الانتخابية',group(list,'الدائرة الانتخابية')],
+              ['المؤهل العلمي',group(list,'المؤهل العلمي')]];
+  blocks.forEach(function(b){
+    html += '<h3 style="color:#a96c28;margin:14px 0 6px;font-size:14px">'+b[0]+'</h3>'+
+      '<table style="width:100%;border-collapse:collapse;font-size:12px"><tbody>'+
+      b[1].map(function(x){ return '<tr><td style="border:1px solid #bbb;padding:5px">'+esc(x.k)+'</td>'+
+        '<td style="border:1px solid #bbb;padding:5px;width:70px;text-align:center">'+x.n+'</td>'+
+        '<td style="border:1px solid #bbb;padding:5px;width:70px;text-align:center">'+(t?Math.round(x.n/t*100):0)+'%</td></tr>'; }).join('')+
+      '</tbody></table>';
+  });
+  doPrint(html + printSign());
+});
+/* نموذج الطلب الواحد — صفحة A4 واحدة */
+function cell(label, val, cls){
+  return '<div class="c'+(cls?' '+cls:'')+'"><span>'+esc(label)+'</span><div>'+esc(val||'—')+'</div></div>';
+}
+function applicationA4(r){
+  var c = coms(r);
+  return '<div class="a4" style="--sigp:'+(Number(CFG.sigPrint||120)/100).toFixed(2)+
+         ';--sigd:'+(Number(CFG.sigDark||180)/100).toFixed(2)+'">' +
+    '<div class="ah">' +
+      '<img src="logo.png" alt="شعار الحزب">' +
+      '<div class="t"><h1>'+esc(CFG.party)+'</h1><h2>طـلـب انـتـسـاب</h2></div>' +
+      '<div class="r">الرقم المرجعي<b dir="ltr">'+esc(r['رقم الطلب'])+'</b>'+
+        'تاريخ التقديم: '+esc(r['تاريخ التقديم'])+'<br>تاريخ الطباعة: '+todayAr()+'</div>' +
+    '</div>' +
+
+    '<div class="sec"><h3>أولاً: البيانات الشخصية</h3><div class="rowz">' +
+      cell('الاسم الرباعي', r['الاسم الرباعي'], 'wide') +
+      cell('الرقم الوطني', r['الرقم الوطني']) +
+      cell('تاريخ الولادة', r['تاريخ الولادة']) +
+      cell('العمر', r['العمر'] ? (r['العمر']+' سنة') : '') +
+      cell('الجنس', r['الجنس']) +
+      cell('الفئة العمرية', r['الفئة العمرية']) +
+      cell('الحالة الاجتماعية', r['الحالة الاجتماعية']) +
+    '</div></div>' +
+
+    '<div class="sec"><h3>ثانياً: العمل والمؤهل العلمي</h3><div class="rowz">' +
+      cell('المهنة', r['المهنة']) +
+      cell('مكان العمل', r['مكان العمل']) +
+      cell('المؤهل العلمي', r['المؤهل العلمي']) +
+      cell('التخصص الجامعي', r['التخصص الجامعي']) +
+      cell('غير ذلك', r['غير ذلك'], 'wide') +
+    '</div></div>' +
+
+    '<div class="sec"><h3>ثالثاً: الاتصال والعنوان</h3><div class="rowz">' +
+      cell('رقم الهاتف', r['رقم الهاتف']) +
+      cell('البريد الإلكتروني', r['البريد الإلكتروني']) +
+      cell('الإقامة (المنطقة)', r['الإقامة (المنطقة)']) +
+      cell('المحافظة', r['المحافظة']) +
+      cell('اللواء', r['اللواء']) +
+      cell('الدائرة الانتخابية', r['الدائرة الانتخابية']) +
+      cell('العنوان حسب بطاقة الأحوال المدنية', r['العنوان حسب بطاقة الأحوال'], 'wide') +
+    '</div></div>' +
+
+    '<div class="sec"><h3>رابعاً: اللجان والتزكية</h3><div class="rowz">' +
+      cell('اللجنة الأولى', c[0]) +
+      cell('اللجنة الثانية', c[1]) +
+      cell('شخص يعرفه في الحزب', r['شخص يعرفه في الحزب']) +
+      cell('هاتف الشخص المعروف', r['هاتف الشخص المعروف']) +
+      cell('الإقرار بمبادئ الحزب', r['الإقرار بالمبادئ']) +
+      cell('إقرار شروط الانتساب', r['إقرار شروط الانتساب']) +
+    '</div>' +
+    (r['لماذا اخترت الحزب'] ? '<div class="c" style="border:0;padding:1.4mm 2mm 0"><span>لماذا اخترت الحزب المدني الديمقراطي؟</span></div>' +
+      '<div class="note">'+esc(r['لماذا اخترت الحزب'])+'</div>' : '') +
+    '<div class="att"><span>صورة الهوية (الوجه): '+(r['صورة الهوية (الوجه)']?'مرفقة ✔':'غير مرفقة')+'</span>'+
+      '<span>صورة الهوية (الظهر): '+(r['صورة الهوية (الظهر)']?'مرفقة ✔':'غير مرفقة')+'</span>'+
+      '<span>عدم المحكومية: '+(r['شهادة عدم المحكومية']?('مرفقة ✔ — بتاريخ '+esc(r['تاريخ شهادة عدم المحكومية'])):'غير مرفقة')+'</span></div>' +
+    '</div>' +
+
+    '<div class="sec"><h3>خامساً: قرار لجنة العضوية</h3><div class="rowz two">' +
+      '<div class="c"><span>حالة الطلب</span><div><span class="stat">'+esc(r['الحالة']||'—')+'</span></div></div>' +
+      cell('آخر تحديث', r['آخر تحديث']) +
+      cell('رقم العضوية', r['رقم العضوية']) +
+      cell('تاريخ العضوية', r['تاريخ العضوية']) +
+      cell('ملاحظات الإدارة', r['ملاحظات الإدارة'], 'wide') +
+    '</div></div>' +
+
+    '<div class="sign four">' +
+      '<div>توقيع مقدّم الطلب<em>'+esc(r['الاسم الرباعي']||'')+'</em></div>' +
+      '<div>توقيع الشخص المعرِّف<em>'+esc(r['شخص يعرفه في الحزب']||'—')+'</em></div>' +
+      '<div class="wsig">'+(CFG.mmSig?'<img src="'+CFG.mmSig+'" alt="">':'')+
+        (CFG.signature || 'مساعد الأمين العام لشؤون العضوية')+'<em>'+esc(CFG.mmName||'')+'</em></div>' +
+      '<div class="wsig">'+(CFG.sgSig?'<img src="'+CFG.sgSig+'" alt="">':'')+
+        'الأمين العام<em>'+esc(CFG.sgName||'')+'</em></div>' +
+    '</div>' +
+
+    '<div class="foot"><div>'+esc(CFG.party)+(CFG.phones?' — هواتف التواصل: <span dir="ltr">'+esc(CFG.phones)+'</span>':'')+'</div>' +
+      '<div>نموذج انتساب إلكتروني — '+esc(r['رقم الطلب'])+'</div></div>' +
+  '</div>';
+}
+$('mPrint').addEventListener('click', function(){
+  if(!CUR) return;
+  doPrint(applicationA4(CUR));
+});
+
+
+/* ---------- أداة صورة العضو ---------- */
+var PT = { img:null, src:'', zoom:1, rot:0, x:0, y:0, drag:false, lx:0, ly:0, imgs:null };
+var PT_W = 480, PT_H = 600;            // مقاس الصورة المحفوظة (4:5)
+var pcv = document.createElement('canvas'); pcv.width=PT_W; pcv.height=PT_H;
+$('pStage').appendChild(pcv); pcv.style.display='none';
+
+function ptFilters(){
+  return 'brightness('+($('pBright').value/100)+') contrast('+($('pContrast').value/100)+')';
+}
+function ptDraw(){
+  if(!PT.img) return;
+  var g = pcv.getContext('2d');
+  g.setTransform(1,0,0,1,0,0);
+  g.clearRect(0,0,PT_W,PT_H);
+  g.fillStyle='#fff'; g.fillRect(0,0,PT_W,PT_H);
+
+  var rad = (PT.rot||0) * Math.PI/180;
+  var iw = PT.img.width, ih = PT.img.height;
+  // مقياس يغطي الإطار مهما كان اتجاه الصورة (طولية أو عرضية) وزاوية التدوير
+  var c = Math.abs(Math.cos(rad)), s2 = Math.abs(Math.sin(rad));
+  var wRot = iw*c + ih*s2, hRot = iw*s2 + ih*c;
+  var base = Math.max(PT_W/wRot, PT_H/hRot);
+  var sc = base * PT.zoom;
+
+  g.save();
+  g.translate(PT_W/2 + PT.x, PT_H/2 + PT.y);
+  g.rotate(rad);
+  g.filter = ptFilters();
+  g.drawImage(PT.img, -iw*sc/2, -ih*sc/2, iw*sc, ih*sc);
+  g.filter = 'none';
+  g.restore();
+
+  if($('pBg').checked) ptRemoveBg(g);
+
+  var p=$('pPrev');
+  p.innerHTML='<img src="'+pcv.toDataURL('image/jpeg',0.92)+'" alt="معاينة">';
+}
+
+/** تبييض الخلفية: يعتمد لون الأركان كمرجع ويزيل ما يقاربه */
+function ptRemoveBg(g){
+  try{
+    var d = g.getImageData(0,0,PT_W,PT_H), a = d.data;
+    var pts = [[3,3],[PT_W-4,3],[3,PT_H-4],[PT_W-4,PT_H-4],[PT_W/2|0,3]];
+    var r=0,gr=0,b=0;
+    pts.forEach(function(pt){
+      var i = ((pt[1]|0)*PT_W + (pt[0]|0))*4;
+      r+=a[i]; gr+=a[i+1]; b+=a[i+2];
+    });
+    r/=pts.length; gr/=pts.length; b/=pts.length;
+    var tol = Number($('pBgTol').value) * 2.2;
+    for (var i=0;i<a.length;i+=4){
+      var dist = Math.sqrt(Math.pow(a[i]-r,2)+Math.pow(a[i+1]-gr,2)+Math.pow(a[i+2]-b,2));
+      if (dist < tol){ a[i]=255; a[i+1]=255; a[i+2]=255; }
+      else if (dist < tol*1.35){
+        var k = (dist - tol)/(tol*0.35);
+        a[i]   = Math.round(a[i]*k + 255*(1-k));
+        a[i+1] = Math.round(a[i+1]*k + 255*(1-k));
+        a[i+2] = Math.round(a[i+2]*k + 255*(1-k));
+      }
+    }
+    g.putImageData(d,0,0);
+  }catch(err){}
+}
+function ptLoad(dataUri){
+  if(!dataUri){ $('pEmpty').hidden=false; pcv.style.display='none'; PT.img=null; $('pPrev').innerHTML='<span>لا توجد صورة</span>'; return; }
+  var im=new Image();
+  im.onload=function(){
+    PT.img=im; PT.zoom=1; PT.x=0; PT.y=0; PT.rot=0;
+    $('pZoom').value=100; $('pBright').value=100; $('pContrast').value=100;
+    $('pRot').value=0; $('pBg').checked=false; $('pBgRow').hidden=true;
+    $('pEmpty').hidden=true; pcv.style.display='block';
+    ptDraw();
+  };
+  im.src=dataUri;
+}
+['pZoom','pBright','pContrast','pRot','pBgTol'].forEach(function(id){
+  $(id).addEventListener('input', function(){
+    if(id==='pZoom') PT.zoom=this.value/100;
+    if(id==='pRot')  PT.rot=Number(this.value);
+    ptDraw();
+  });
+});
+$('pBg').addEventListener('change', function(){ $('pBgRow').hidden = !this.checked; ptDraw(); });
+$('pRotL').addEventListener('click', function(){ PT.rot=((PT.rot||0)-90+540)%360-180; $('pRot').value=PT.rot; ptDraw(); });
+$('pRotR').addEventListener('click', function(){ PT.rot=((PT.rot||0)+90+540)%360-180; $('pRot').value=PT.rot; ptDraw(); });
+(function(){
+  var st=$('pStage');
+  function pos(e){ var t=e.touches?e.touches[0]:e; return {x:t.clientX,y:t.clientY}; }
+  function down(e){ if(!PT.img) return; PT.drag=true; st.classList.add('drag'); var p=pos(e); PT.lx=p.x; PT.ly=p.y; }
+  function move(e){
+    if(!PT.drag) return;
+    var p=pos(e), r=pcv.getBoundingClientRect(), k=PT_W/r.width;
+    PT.x += (p.x-PT.lx)*k; PT.y += (p.y-PT.ly)*k; PT.lx=p.x; PT.ly=p.y;
+    ptDraw(); if(e.cancelable) e.preventDefault();
+  }
+  function up(){ PT.drag=false; st.classList.remove('drag'); }
+  st.addEventListener('mousedown',down); window.addEventListener('mousemove',move); window.addEventListener('mouseup',up);
+  st.addEventListener('touchstart',down,{passive:true}); st.addEventListener('touchmove',move,{passive:false}); st.addEventListener('touchend',up);
+})();
+$('pReset').addEventListener('click', function(){ if(PT.src) ptLoad(PT.imgs?PT.imgs[PT.src]:null); });
+$('pUploadBtn').addEventListener('click', function(){ $('pUpload').click(); });
+$('pUpload').addEventListener('change', function(){
+  var f=this.files&&this.files[0]; if(!f) return;
+  var r=new FileReader();
+  r.onload=function(){ PT.src='upload'; if(!PT.imgs) PT.imgs={}; PT.imgs.upload=r.result;
+    $('pSrc').querySelectorAll('[data-src]').forEach(function(b){ b.classList.remove('on'); });
+    ptLoad(r.result); };
+  r.readAsDataURL(f);
+});
+$('pSrc').querySelectorAll('[data-src]').forEach(function(b){
+  b.addEventListener('click', function(){
+    if(!PT.imgs){ return; }
+    var k=b.dataset.src;
+    if(!PT.imgs[k]){ alert('لا توجد صورة من هذا المصدر.'); return; }
+    $('pSrc').querySelectorAll('[data-src]').forEach(function(x){ x.classList.remove('on'); });
+    b.classList.add('on'); PT.src=k; ptLoad(PT.imgs[k]);
+  });
+});
+function loadRowImages(row){
+  PT.imgs=null; PT.img=null; PT.src='';
+  $('pEmpty').hidden=false; $('pEmpty').textContent='جارٍ تحميل الصور…';
+  pcv.style.display='none'; $('pPrev').innerHTML='<span>المعاينة</span>';
+  $('pOk').classList.remove('show');
+  google.script.run.withSuccessHandler(function(res){
+    if(!res || !res.ok){ $('pEmpty').textContent='تعذّر تحميل الصور.'; return; }
+    PT.imgs={ photo:res.photo, idFront:res.idFront, idBack:res.idBack };
+    $('pEmpty').textContent='اختر مصدر الصورة من الأزرار أعلاه';
+    var first = res.photo ? 'photo' : (res.idFront ? 'idFront' : (res.idBack ? 'idBack' : ''));
+    if(first){
+      var btn=$('pSrc').querySelector('[data-src="'+first+'"]');
+      if(btn){ btn.classList.add('on'); }
+      PT.src=first; ptLoad(PT.imgs[first]);
+    }
+  }).withFailureHandler(function(){ $('pEmpty').textContent='تعذّر تحميل الصور.'; })
+  .adminImages(CRED, row);
+}
+$('pSave').addEventListener('click', function(){
+  if(!CUR || !PT.img){ alert('اختر صورة أولاً.'); return; }
+  ov(true);
+  google.script.run.withSuccessHandler(function(res){
+    ov(false);
+    if(res && res.ok){
+      CUR['الصورة الشخصية']=res.url;
+      if(!PT.imgs) PT.imgs={};
+      PT.imgs.photo = pcv.toDataURL('image/jpeg',0.9);
+      var a=$('pOk'); a.textContent='تم حفظ صورة العضو.'; a.classList.add('show');
+      if(CUR['الحالة']===ST.MEM) loadCard();
+    } else alert((res&&res.message)||'تعذّر الحفظ');
+  }).withFailureHandler(function(e){ ov(false); alert('خطأ: '+e.message); })
+  .adminSavePhoto(CRED, CUR._row, pcv.toDataURL('image/jpeg',0.9));
+});
+
+/* ---------- بطاقة العضوية ---------- */
+function loadCard(){
+  if(!CUR || CUR['الحالة']!==ST.MEM){ $('cardBox').hidden=true; return; }
+  google.script.run.withSuccessHandler(function(res){
+    if(!res || !res.ok){ $('cardBox').hidden=true; return; }
+    $('cardHost').innerHTML = buildMemberCard(Object.assign({logo:LOGO_FULL, mark:LOGO_MARK}, res.card));
+    renderCardQR($('cardHost'));
+    $('cardBox').hidden=false;
+  }).withFailureHandler(function(){ $('cardBox').hidden=true; })
+  .adminCard(CRED, CUR._row);
+}
+$('btnPrintCard').addEventListener('click', function(){ printCards('cardBox'); });
+
+/* ---------- الإعدادات ---------- */
+var YN=['نعم','لا'];
+function loadSettings(){
+  loadSigs();
+  $('linkBox').innerHTML =
+    '<div><span class="k">رابط نموذج الانتساب</span><span dir="ltr">'+esc((CFG.statusUrl||'').replace('?page=status',''))+'</span></div>'+
+    '<div><span class="k">رابط الاستعلام عن الطلب</span><span dir="ltr">'+esc(CFG.statusUrl||'')+'</span></div>';
+  ov(true);
+  google.script.run.withSuccessHandler(function(res){
+    ov(false);
+    if(!res || !res.ok){ alert((res&&res.message)||'تعذّر التحميل'); return; }
+    var HIDE = ['حجم التواقيع في البطاقة (%)','حجم التواقيع في المطبوعات (%)','درجة تغميق التواقيع (%)'];
+    // مزامنة مؤشرات ضبط التواقيع مع القيم المحفوظة
+    var SL = { 'حجم التواقيع في البطاقة (%)':'sigCardR', 'حجم التواقيع في المطبوعات (%)':'sigPrintR', 'درجة تغميق التواقيع (%)':'sigDarkR' };
+    res.settings.forEach(function(s){ if(SL[s.key] && Number(s.value)) $(SL[s.key]).value = Number(s.value); });
+    applySigTune();
+    $('setBox').innerHTML = res.settings.filter(function(s){ return HIDE.indexOf(s.key)===-1; }).map(function(s){
+      var isYN=/\(نعم\/لا\)/.test(s.key);
+      var full=(s.key.indexOf('اسم الموظف')===0||s.key.indexOf('عنوان')===0||s.key.indexOf('الرقم الوطني')===0)?' full':'';
+      var input = isYN
+        ? '<select data-k="'+esc(s.key)+'">'+YN.map(function(v){ return '<option'+(v===s.value?' selected':'')+'>'+v+'</option>'; }).join('')+'</select>'
+        : '<input type="text" data-k="'+esc(s.key)+'" value="'+esc(s.value)+'">';
+      return '<div class="field'+full+'"><label>'+esc(s.key)+'</label>'+input+'</div>';
+    }).join('');
+    $('setOk').classList.remove('show'); $('setErr').classList.remove('show');
+  }).withFailureHandler(function(e){ ov(false); alert('خطأ: '+e.message); }).adminGetSettings(CRED);
+}
+$('setReload').addEventListener('click', loadSettings);
+$('setSave').addEventListener('click', function(){
+  var pairs=[];
+  $('setBox').querySelectorAll('[data-k]').forEach(function(el){ pairs.push({key:el.dataset.k, value:el.value}); });
+  ov(true);
+  google.script.run.withSuccessHandler(function(res){
+    ov(false);
+    $('setOk').classList.remove('show'); $('setErr').classList.remove('show');
+    if(res && res.ok){
+      $('setOk').textContent='تم حفظ الإعدادات. حدّث الصفحة لتطبيقها على الترويسة والرسائل.';
+      $('setOk').classList.add('show');
+      pairs.forEach(function(p){
+        if(p.key==='اسم الحزب') CFG.party=p.value;
+        if(p.key==='اسم الموظف وصفته') CFG.officer=p.value;
+        if(p.key==='هواتف الحزب للتواصل') CFG.phones=p.value;
+        if(p.key==='كلمة مرور لوحة الإدارة'){ CRED.pass=p.value; try{ sessionStorage.setItem('jcdp_cred', JSON.stringify(CRED)); }catch(e){} }
+      });
+    } else { $('setErr').textContent=(res&&res.message)||'تعذّر الحفظ'; $('setErr').classList.add('show'); }
+  }).withFailureHandler(function(e){ ov(false); alert('خطأ: '+e.message); }).adminSaveSettings(CRED, pairs);
+});
+
+/* ---------- تواقيع المسؤولين ---------- */
+var SIG_TARGET = '';
+function paintSigs(sg, mm){
+  $('sigBoxSg').innerHTML = sg ? '<img src="'+sg+'" alt="توقيع الأمين العام">' : '<span>لا يوجد توقيع محفوظ</span>';
+  $('sigBoxMm').innerHTML = mm ? '<img src="'+mm+'" alt="توقيع مساعد الأمين العام">' : '<span>لا يوجد توقيع محفوظ</span>';
+  CFG.sgSig = sg || ''; CFG.mmSig = mm || '';
+}
+function loadSigs(){
+  google.script.run.withSuccessHandler(function(res){
+    if(res && res.ok) paintSigs(res.sg, res.mm);
+  }).withFailureHandler(function(){}).adminSignatures(CRED);
+}
+
+/* --- ضبط حجم التواقيع ووضوحها --- */
+window.applySigTune = applySigTune;
+function applySigTune(){
+  var c=+$('sigCardR').value, p=+$('sigPrintR').value, d=+$('sigDarkR').value;
+  $('sigCardV').textContent=c+'%'; $('sigPrintV').textContent=p+'%'; $('sigDarkV').textContent=d+'%';
+  CFG.sigCard=c; CFG.sigPrint=p; CFG.sigDark=d;
+  // معاينة حيّة: صندوقا التوقيع في الإعدادات + البطاقة المعروضة إن كانت مفتوحة
+  [$('sigBoxSg'),$('sigBoxMm')].forEach(function(b){
+    if(!b) return;
+    b.style.setProperty('--sigd', (d/100).toFixed(2));
+    var im=b.querySelector('img'); if(im) im.style.maxHeight = Math.min(100, 55*(c/100)*1.3)+'%';
+  });
+  document.querySelectorAll('#cardHost .mcard').forEach(function(card){
+    card.style.setProperty('--sigk', (c/100).toFixed(2));
+    card.style.setProperty('--sigd', (d/100).toFixed(2));
+  });
+  try{ fitCardText($('cardHost')); }catch(e){}
+}
+(function initSigTune(){
+  $('sigCardR').value  = CFG.sigCard  || 130;
+  $('sigPrintR').value = CFG.sigPrint || 120;
+  $('sigDarkR').value  = CFG.sigDark  || 180;
+  ['sigCardR','sigPrintR','sigDarkR'].forEach(function(id){
+    $(id).addEventListener('input', applySigTune);
+  });
+  applySigTune();
+})();
+$('sigTuneSave').addEventListener('click', function(){
+  var pairs=[
+    {key:'حجم التواقيع في البطاقة (%)',  value:String($('sigCardR').value)},
+    {key:'حجم التواقيع في المطبوعات (%)', value:String($('sigPrintR').value)},
+    {key:'درجة تغميق التواقيع (%)',       value:String($('sigDarkR').value)}
+  ];
+  ov(true);
+  google.script.run.withSuccessHandler(function(res){
+    ov(false);
+    var a=$('sigTuneOk');
+    a.textContent = (res&&res.ok) ? 'تم حفظ إعدادات التواقيع وتطبيقها على البطاقات والمطبوعات.' : ((res&&res.message)||'تعذّر الحفظ');
+    a.classList.add('show');
+    if(CUR) loadCard();
+  }).withFailureHandler(function(e){ ov(false); alert('خطأ: '+e.message); }).adminSaveSettings(CRED, pairs);
+});
+document.querySelectorAll('[data-sigup]').forEach(function(b){
+  b.addEventListener('click', function(){ SIG_TARGET=b.dataset.sigup; $('sigFile').value=''; $('sigFile').click(); });
+});
+document.querySelectorAll('[data-sigdel]').forEach(function(b){
+  b.addEventListener('click', function(){
+    if(!confirm('حذف التوقيع المحفوظ؟')) return;
+    saveSig(b.dataset.sigdel, '');
+  });
+});
+$('sigFile').addEventListener('change', function(){
+  var f=this.files&&this.files[0]; if(!f || !SIG_TARGET) return;
+  var r=new FileReader();
+  r.onload=function(){
+    var im=new Image();
+    im.onload=function(){
+      // تحويل إلى PNG: خلفية شفافة تماماً + حبر أسود غامق يظهر بوضوح عند الطباعة
+      var max=900, w=im.width, h=im.height;
+      if(w>max){ h=Math.round(h*max/w); w=max; }
+      var c=document.createElement('canvas'); c.width=w; c.height=h;
+      var g=c.getContext('2d'); g.drawImage(im,0,0,w,h);
+      try{
+        var d=g.getImageData(0,0,w,h), a=d.data;
+        // أفتح وأغمق قيمة في الصورة لضبط العتبة تلقائياً مهما كانت إضاءة التصوير
+        var mn=255, mx=0, i, lum;
+        for(i=0;i<a.length;i+=4){
+          lum=(a[i]*0.299+a[i+1]*0.587+a[i+2]*0.114);
+          if(lum<mn) mn=lum; if(lum>mx) mx=lum;
+        }
+        var span=Math.max(30, mx-mn);
+        var inkEnd = mn + span*0.45;   // ما دون هذه القيمة = حبر كامل
+        var bgStart= mn + span*0.80;   // ما فوقها = خلفية تُحذف
+        for(i=0;i<a.length;i+=4){
+          lum=(a[i]*0.299+a[i+1]*0.587+a[i+2]*0.114);
+          var alpha;
+          if(lum>=bgStart) alpha=0;
+          else if(lum<=inkEnd) alpha=255;
+          else alpha=Math.round(255*(bgStart-lum)/(bgStart-inkEnd));
+          a[i]=18; a[i+1]=18; a[i+2]=22;            // حبر أسود مائل للأزرق الغامق
+          a[i+3]=Math.min(255, Math.round(alpha*(a[i+3]/255)*1.15));
+        }
+        g.putImageData(d,0,0);
+        // قصّ الهوامش الفارغة حتى يملأ التوقيع الخانة المخصّصة له
+        var x0=w, y0=h, x1=-1, y1=-1, x, y;
+        for(y=0;y<h;y++) for(x=0;x<w;x++){
+          if(a[(y*w+x)*4+3] > 14){
+            if(x<x0) x0=x; if(x>x1) x1=x; if(y<y0) y0=y; if(y>y1) y1=y;
+          }
+        }
+        if(x1>x0 && y1>y0){
+          var pad=Math.round(Math.max(w,h)*0.015);
+          x0=Math.max(0,x0-pad); y0=Math.max(0,y0-pad);
+          x1=Math.min(w-1,x1+pad); y1=Math.min(h-1,y1+pad);
+          var cw=x1-x0+1, ch=y1-y0+1;
+          var c2=document.createElement('canvas'); c2.width=cw; c2.height=ch;
+          c2.getContext('2d').drawImage(c, x0, y0, cw, ch, 0, 0, cw, ch);
+          c=c2;
+        }
+      }catch(err){}
+      saveSig(SIG_TARGET, c.toDataURL('image/png'));
+    };
+    im.src=r.result;
+  };
+  r.readAsDataURL(f);
+});
+function saveSig(which, dataUrl){
+  ov(true);
+  google.script.run.withSuccessHandler(function(res){
+    ov(false);
+    if(res && res.ok){
+      if(which==='sg') paintSigs(res.img, CFG.mmSig); else paintSigs(CFG.sgSig, res.img);
+      var a=$('sigOk'); a.textContent = dataUrl ? 'تم حفظ التوقيع.' : 'تم حذف التوقيع.'; a.classList.add('show');
+      if(CUR && CUR['الحالة']===ST.MEM) loadCard();
+    } else alert((res&&res.message)||'تعذّر الحفظ');
+  }).withFailureHandler(function(e){ ov(false); alert('خطأ: '+e.message); })
+  .adminSaveSignature(CRED, which, dataUrl);
+}
+
+/* ---------- تصدير CSV ---------- */
+$('btnCsv').addEventListener('click', function(){
+  var list=filtered(); if(!list.length){ alert('لا توجد بيانات للتصدير.'); return; }
+  var cols=Object.keys(list[0]).filter(function(k){ return k!=='_row'; });
+  var lines=[cols.join(',')];
+  list.forEach(function(r){ lines.push(cols.map(function(c){ return '"'+String(r[c]==null?'':r[c]).replace(/"/g,'""')+'"'; }).join(',')); });
+  try{
+    var blob=new Blob(['﻿'+lines.join('\n')],{type:'text/csv;charset=utf-8;'});
+    var a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+    a.download='طلبات_الانتساب.csv'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  }catch(e){ alert('تعذّر التنزيل من المتصفح. يمكنك التصدير مباشرة من جدول البيانات.'); }
+});
+</script>
+</body>
+</html>

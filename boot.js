@@ -33,6 +33,8 @@
         var pf = document.getElementById('passField');
         if (pf) pf.hidden = !C.requirePass;
       }
+      // الروابط الرسمية في شاشة «عن الحزب»
+      if (typeof window.applyExtLinks === 'function') window.applyExtLinks();
     } catch (e) {}
   }
 
